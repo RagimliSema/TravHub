@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap");
+
+/* ================= Bölmə ================= */
+.client-carousel {
+  padding: 115px 0;
+  background: #1bbc9b;
+}
+
+.cc-container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.cc-title {
+  margin: 0 0 60px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* ================= Karusel ================= */
+/* görünən loqo sayı ekran eninə görə (demo-dakı kimi): 2 / 3 / 4 / 5 / 6 */
+.cc-viewport {
+  --per-view: 2;
+  --gap: 24px;
+  overflow: hidden;
+}
+
+@media (min-width: 575px)  { .cc-viewport { --per-view: 3; } }
+@media (min-width: 992px)  { .cc-viewport { --per-view: 4; } }
+@media (min-width: 1200px) { .cc-viewport { --per-view: 5; } }
+@media (min-width: 1400px) { .cc-viewport { --per-view: 6; } }
+
+/* bir addım = bir loqonun eni + aralıq = (100% + gap) / görünən say
+   (translate-dəki 100% zolağın öz enidir, o da karuselin enidir) */
+.cc-track {
+  display: flex;
+  gap: var(--gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform: translateX(calc(var(--index, 0) * -1 * (100% + var(--gap)) / var(--per-view)));
+  will-change: transform;
+}
+
+.cc-item {
+  flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+}
+
+.cc-item img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ================= Giriş animasiyası ================= */
+/* başlıq və karusel 20px aşağıdan qalxır (demo-dakı fadeInUp: 1s, 0.1s / 0.2s gecikmə) */
+.cc-title,
+.cc-viewport {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.client-carousel.is-inview .cc-title {
+  animation: ccFadeInUp 1s ease 0.1s both;
+}
+
+.client-carousel.is-inview .cc-viewport {
+  animation: ccFadeInUp 1s ease 0.2s both;
+}
+
+@keyframes ccFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 991px) {
+  .client-carousel { padding: 90px 0; }
+  .cc-title { margin-bottom: 45px; }
+}
+
+@media (max-width: 575px) {
+  .client-carousel { padding: 70px 0; }
+  .cc-title { margin-bottom: 35px; font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-title,
+  .cc-viewport {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+}

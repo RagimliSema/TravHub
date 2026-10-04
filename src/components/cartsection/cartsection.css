@@ -1,0 +1,358 @@
+/* =========================================
+   Mağaza səhifələri (Cart, Checkout, My Orders) – ortaq stillər.
+   Rəng və şriftlər saytın qalan hissəsi ilə eynidir;
+   yan qutu Tour Details-dəki "Booking Form" qutusu kimidir.
+========================================= */
+.shop-section {
+  --shop-accent: #1bbc9b;
+  --shop-dark: #292929;
+  --shop-text: #555555;
+  --shop-border: #e5e3e0;
+
+  padding: 120px 0;
+  background: #ffffff;
+  font-family: "Roboto", sans-serif;
+  color: var(--shop-text);
+}
+
+.shop-container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.shop-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 370px;
+  align-items: start;
+  gap: 30px;
+}
+
+/* ---------- Yan qutu: cəm və düymə ---------- */
+.shop-summary {
+  padding: 31px 22px 32px;
+  border: 1px solid rgba(41, 41, 41, 0.1);
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.shop-summary__title {
+  margin: -2px 0 17px;
+  font-family: "Geologica", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--shop-dark);
+}
+
+.shop-summary__title::before {
+  content: "";
+  position: relative;
+  top: 4px;
+  display: inline-block;
+  width: 4px;
+  height: 22px;
+  margin-right: 14px;
+  background: var(--shop-accent);
+}
+
+.shop-summary__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shop-summary__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 14px;
+  padding: 0 0 14px;
+  border-bottom: 1px solid rgba(41, 41, 41, 0.1);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.shop-summary__row span {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--shop-dark);
+}
+
+.shop-summary__row--total {
+  font-family: "Geologica", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--shop-dark);
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.shop-summary__note {
+  margin: 18px 0 0;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.shop-summary__btn {
+  display: block;
+  width: 100%;
+  margin-top: 26px;
+  padding: 12px 20px;
+}
+
+.shop-summary__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.shop-error {
+  margin: 18px 0 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(192, 57, 43, 0.08);
+  font-size: 15px;
+  line-height: 22px;
+  color: #c0392b;
+}
+
+/* yaşıl mətn düyməsi (Continue Shopping, Clear Cart) */
+.shop-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: "Geologica", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--shop-dark);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.shop-link:hover,
+.shop-link:focus-visible {
+  color: var(--shop-accent);
+}
+
+.shop-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   Səbət cədvəli
+========================================= */
+.cart-head,
+.cart-item {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr) 100px 117px 110px 32px;
+  align-items: center;
+  gap: 16px;
+}
+
+.cart-head {
+  padding: 0 0 14px;
+  border-bottom: 1px solid var(--shop-border);
+  font-family: "Geologica", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--shop-dark);
+}
+
+/* "Tour" sözü şəkil + ad sütunlarını tutur */
+.cart-head span:first-child {
+  grid-column: 1 / 3;
+}
+
+.cart-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cart-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--shop-border);
+}
+
+.cart-item__image {
+  display: block;
+  width: 100px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.cart-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cart-item__title {
+  font-family: "Geologica", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--shop-dark);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.cart-item__title:hover,
+.cart-item__title:focus-visible {
+  color: var(--shop-accent);
+}
+
+.cart-item__meta {
+  font-size: 14px;
+}
+
+.cart-item__price,
+.cart-item__subtotal {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--shop-dark);
+}
+
+/* − 2 + (Tour Details-dəki sayğac kimi) */
+.cart-qty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 117px;
+  height: 39px;
+  padding: 0 9px;
+  border: 1px solid var(--shop-border);
+  border-radius: 100px;
+  font-family: "Geologica", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--shop-dark);
+}
+
+.cart-qty button,
+.cart-item__remove {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--shop-text);
+  font-size: 11px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.4s;
+}
+
+.cart-item__remove {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  background: #f0f0f0;
+  color: var(--shop-dark);
+}
+
+.cart-qty button:hover,
+.cart-qty button:focus-visible {
+  background: var(--shop-accent);
+}
+
+.cart-item__remove:hover,
+.cart-item__remove:focus-visible {
+  background: #c0392b;
+  color: #ffffff;
+}
+
+.cart-qty button:disabled,
+.cart-item__remove:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cart-qty button:disabled:hover {
+  background: var(--shop-text);
+}
+
+.cart-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 26px;
+}
+
+/* =========================================
+   Responsive
+========================================= */
+@media (max-width: 1199px) {
+  .shop-layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+}
+
+@media (max-width: 991px) {
+  .shop-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 50px;
+  }
+}
+
+@media (max-width: 767px) {
+  .shop-section {
+    padding: 80px 0;
+  }
+
+  .cart-head {
+    display: none;
+  }
+
+  /* telefonda hər tur kart kimi: şəkil + ad yuxarıda, qiymət / say / cəm altda */
+  .cart-item {
+    grid-template-columns: 80px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "image info remove"
+      "price qty subtotal";
+    row-gap: 14px;
+  }
+
+  .cart-item__image {
+    grid-area: image;
+    width: 80px;
+    height: 64px;
+  }
+
+  .cart-item__info { grid-area: info; }
+  .cart-item__remove { grid-area: remove; }
+  .cart-item__price { grid-area: price; }
+
+  .cart-qty {
+    grid-area: qty;
+    justify-self: center;
+  }
+
+  .cart-item__subtotal {
+    grid-area: subtotal;
+    justify-self: end;
+    white-space: nowrap;
+  }
+
+  .cart-item__remove {
+    justify-self: end;
+  }
+
+  .cart-item__title {
+    font-size: 16px;
+  }
+}

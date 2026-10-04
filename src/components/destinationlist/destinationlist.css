@@ -1,0 +1,45 @@
+/* ================= Destination səhifəsi ================= */
+/* kartın öz stilləri: components/destinationcard/destinationcard.css */
+.destination-list {
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+.destination-list__container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* demo: 4 / 3 / 2 / 1 sütun, aralıq 25px (sıralar) və 24px (sütunlar) */
+.destination-list__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 25px 24px;
+}
+
+.destination-list__more {
+  margin-top: 60px;
+  text-align: center;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .destination-list__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 991px) {
+  .destination-list__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 767px) {
+  .destination-list { padding: 80px 0; }
+}
+
+@media (max-width: 575px) {
+  .destination-list__grid {
+    grid-template-columns: minmax(0, 360px);
+    justify-content: center;
+  }
+}

@@ -1,0 +1,11 @@
+node_modules
+
+# real environment variables – never commit (example: .env.example)
+.env
+.env.*
+!.env.example
+
+# logs and test output
+logs
+*.log
+coverage

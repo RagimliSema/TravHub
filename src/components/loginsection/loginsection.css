@@ -1,0 +1,497 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+
+/* ================= Bölmə ================= */
+.login-section {
+  --login-accent: #1bbc9b;
+  --login-dark: #292929;
+  --login-text: #555555;
+  --login-border: #e5e3e0;
+
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+/* künc fiqurları (demo-da yalnız 1500px-dən geniş ekranda görünür) */
+.login-section__shape {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  animation: loginShapeMove 4s linear infinite;
+  pointer-events: none;
+}
+
+.login-section__shape--one {
+  top: 120px;
+  left: 0;
+  background-position: left top;
+}
+
+.login-section__shape--two {
+  right: 0;
+  bottom: 120px;
+  background-position: right bottom;
+}
+
+@keyframes loginShapeMove {
+  0%,
+  100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.login-section__container {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* demo: iki bərabər sütun, aralıq 30px, şaquli ortada */
+.login-section__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+  align-items: center;
+}
+
+/* ================= Giriş animasiyaları ================= */
+.login-section__media-col,
+.login-section__form-col {
+  opacity: 0;
+}
+
+.login-section__media-col.is-inview {
+  animation: loginFadeInUp 1s ease 0.1s both;
+}
+
+.login-section__form-col.is-inview {
+  animation: loginFadeInRight 1s ease 0.2s both;
+}
+
+@keyframes loginFadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loginFadeInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ================= Şəkillər ================= */
+.login-media {
+  position: relative;
+  left: 22px;
+  z-index: 1;
+  max-width: 587px;
+  margin-left: 58px;
+}
+
+/* əsas şəkil: kənarları fırça ilə çəkilmiş kimi (maska) */
+.login-media__main {
+  -webkit-mask: url("../../assets/image/login-mask.svg") center / contain no-repeat;
+  mask: url("../../assets/image/login-mask.svg") center / contain no-repeat;
+}
+
+.login-media__main img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.login-media__man,
+.login-media__cloud,
+.login-media__cloud-two {
+  position: absolute;
+  display: block;
+}
+
+.login-media__man {
+  bottom: 0;
+  left: -80px;
+}
+
+.login-media__cloud {
+  top: 55px;
+  right: 55px;
+}
+
+.login-media__cloud-two {
+  top: 47%;
+  right: -80px;
+}
+
+/* ================= Form ================= */
+.login-form {
+  box-sizing: border-box;
+  max-width: 536px;
+  margin-left: auto;
+  padding: 69px 30px 54px;
+  border: 1px solid var(--login-border);
+  border-radius: 20px;
+  font-family: "Roboto", sans-serif;
+  color: var(--login-text);
+}
+
+/* başlıq: "Welcome" + "Login Account" (32px) */
+.login-form .section-title {
+  max-width: none;
+  margin: 0 0 30px;
+}
+
+.login-form .section-title__heading {
+  margin-bottom: 0;
+  font-size: 32px;
+}
+
+/* Google / Facebook düymələri (yalnız görünüş) */
+.login-form__socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.login-form__social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 19px;
+  border: 1px solid var(--login-border);
+  border-radius: 8px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--login-text);
+  cursor: pointer;
+  transition: border-color 0.4s, color 0.4s;
+}
+
+.login-form__social:hover,
+.login-form__social:focus-visible {
+  border-color: var(--login-accent);
+  color: var(--login-accent);
+}
+
+.login-form__social:focus-visible {
+  outline: 2px solid var(--login-accent);
+  outline-offset: 2px;
+}
+
+/* "Or Sign Up with email" – ortadan keçən xətt */
+.login-form__divider {
+  position: relative;
+  isolation: isolate;
+  max-width: 400px;
+  margin: 27px auto 16px;
+  font-size: 12px;
+  line-height: 22.5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.login-form__divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 1px;
+  background: var(--login-border);
+}
+
+.login-form__divider span {
+  display: inline-block;
+  padding: 0 15px;
+  background: #ffffff;
+}
+
+/* inputlar */
+.login-form__field {
+  margin-bottom: 16px;
+}
+
+.login-form__field label {
+  display: block;
+  margin: 0 0 5px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--login-dark);
+  cursor: pointer;
+}
+
+.login-form__field input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding: 0 20px;
+  border: 1px solid var(--login-border);
+  border-radius: 8px;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 16px;
+  color: rgba(85, 85, 85, 0.6);
+  transition: color 0.4s, border-color 0.4s;
+}
+
+.login-form__field input:focus {
+  border-color: var(--login-accent);
+  color: var(--login-text);
+}
+
+/* "Remember Me?" + "Forgot your Password?" */
+.login-form__check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 30px;
+  margin: 18px 0 25px;
+  font-size: 14px;
+}
+
+.login-form__remember {
+  position: relative;
+  display: inline-block;
+  padding-left: 26px;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+/* əsl checkbox gizlidir (klaviatura ilə işləyir), yerində öz qutumuz görünür */
+.login-form__remember input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+}
+
+.login-form__box {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--login-border);
+  border-radius: 5px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.login-form__box::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 5px;
+  height: 8px;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  opacity: 0;
+  transform: rotate(45deg);
+  transition: opacity 0.15s ease-in-out;
+}
+
+.login-form__remember input:checked + .login-form__box {
+  border-color: var(--login-accent);
+  background: var(--login-accent);
+}
+
+.login-form__remember input:checked + .login-form__box::before {
+  opacity: 1;
+}
+
+.login-form__remember input:focus-visible + .login-form__box {
+  outline: 2px solid var(--login-accent);
+  outline-offset: 2px;
+}
+
+/* linklər: hover-də altından xətt soldan sağa uzanır */
+.login-form__link {
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 95% / 0 1px no-repeat;
+  transition: background-size 0.5s, color 0.5s;
+}
+
+.login-form__link:hover,
+.login-form__link:focus-visible {
+  color: var(--login-accent);
+  background-size: 100% 1px;
+}
+
+.login-form__link--accent {
+  color: var(--login-accent);
+}
+
+/* "Login In Account" – tam en, künclər 8px */
+.login-form__submit {
+  display: block;
+  width: 100%;
+  padding: 7.2px 25px;
+  border-radius: 8px;
+}
+
+.login-form__register {
+  margin: 17px 0 0;
+  font-size: 14px;
+  line-height: 26px;
+  text-align: center;
+}
+
+/* ---------- Backend inteqrasiyası: xəta, qeydiyyat, hesab paneli ---------- */
+.login-form__error {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(192, 57, 43, 0.08);
+  font-size: 14px;
+  line-height: 22px;
+  color: #c0392b;
+}
+
+/* uğur bildirişi (link göndərildi, şifrə yeniləndi) */
+.login-form__notice {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(27, 188, 155, 0.1);
+  font-size: 14px;
+  line-height: 22px;
+  color: #12866e;
+}
+
+/* "Forgot Password" səhifəsində başlıq altındakı izah və SMTP qeydi */
+.login-form__intro {
+  margin: -14px 0 24px;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.login-form__hint {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 20px;
+  color: #8a6100;
+}
+
+/* qeydiyyatda "Remember Me" sətri yoxdur – düymə formadan bir az aralı */
+.login-form__submit--register {
+  margin-top: 25px;
+}
+
+.login-form__submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.login-account__email {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -14px 0 24px;
+  font-size: 16px;
+}
+
+.login-account__badge {
+  padding: 2px 10px;
+  border-radius: 20px;
+  background: var(--login-accent);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.login-account__role {
+  margin: 0 0 18px;
+  font-size: 15px;
+}
+
+.login-account__role strong {
+  color: var(--login-dark);
+}
+
+/* adminlər üçün "Admin Panel" – yaşıl, digər linklərdən seçilsin */
+.login-account__links .login-account__admin {
+  color: var(--login-accent);
+}
+
+.login-account__links {
+  margin: 0 0 30px;
+  padding: 0;
+  list-style: none;
+}
+
+.login-account__links li + li {
+  border-top: 1px solid var(--login-border);
+}
+
+.login-account__links a {
+  display: block;
+  padding: 14px 0;
+  font-family: "Geologica", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--login-dark);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-account__links a:hover,
+.login-account__links a:focus-visible {
+  color: var(--login-accent);
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1500px) {
+  .login-section__shape { display: none; }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .login-form__social { gap: 5px; padding: 4px 10px; }
+}
+
+@media (max-width: 991px) {
+  .login-section__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 50px;
+  }
+
+  .login-form { max-width: 100%; }
+}
+
+@media (max-width: 767px) {
+  .login-section { padding: 80px 0; }
+  .login-media { left: 0; margin-left: 0; }
+
+  .login-media__man,
+  .login-media__cloud,
+  .login-media__cloud-two { display: none; }
+
+  .login-form { padding: 60px 20px 44px; }
+  .login-form__socials { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-section__media-col,
+  .login-section__form-col {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .login-section__shape { animation: none; }
+}

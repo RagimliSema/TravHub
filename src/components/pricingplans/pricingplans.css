@@ -1,0 +1,304 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@500&family=Roboto:wght@400;500&display=swap");
+
+/* ================= Bölmə ================= */
+.pricing-plans {
+  --price-accent: #1bbc9b;
+  --price-dark: #292929;
+  --price-text: #555555;
+
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+.pricing-container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* demo: 4 / 2 / 1 sütun, aralıq 24px */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* giriş: kart ekrana girəndə 20px aşağıdan qalxır (gecikmə JSX-də: hər karta +100ms).
+   Animasiya ayrıca qutudadır ki, kartın hover keçidlərini gecikdirməsin. */
+.pricing-col {
+  opacity: 0;
+}
+
+.pricing-col.is-inview {
+  animation: pricingFadeInUp 1s ease both;
+}
+
+@keyframes pricingFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= Kart ================= */
+.pricing-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 36px 35px 38px;
+  border: 1px solid #e5e3e0;
+  border-radius: 16px;
+  background: #f1f4fa;
+  text-align: center;
+  transition: border-color 0.5s;
+}
+
+.pricing-card:hover {
+  border-color: var(--price-accent);
+}
+
+/* yaşıl təbəqə: hover-də yuxarıdan aşağı dolur, çıxanda aşağıya doğru çəkilir */
+.pricing-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: auto;
+  bottom: 0;
+  z-index: -1;
+  width: 100%;
+  height: 0;
+  background: var(--price-accent);
+  transition: height 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s;
+}
+
+.pricing-card:hover::after {
+  top: 0;
+  bottom: auto;
+  height: 100%;
+}
+
+/* ---------- Mətnlər ---------- */
+.pricing-card__name,
+.pricing-card__price,
+.pricing-card__text,
+.pricing-card__list-title,
+.pricing-card__list li {
+  transition: color 0.3s;
+}
+
+.pricing-card__name {
+  margin: 0 0 12px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--price-text);
+}
+
+.pricing-card__price {
+  margin: 0 0 13px;
+  font-family: "Geologica", sans-serif;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -1.21px;
+  color: var(--price-dark);
+}
+
+.pricing-card__text {
+  margin: 0 0 31px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.43px;
+  color: var(--price-text);
+}
+
+.pricing-card__list-title {
+  margin: 22px 0 13px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--price-dark);
+  text-align: left;
+}
+
+.pricing-card__list {
+  margin: 0 -10px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.pricing-card__list li {
+  position: relative;
+  margin-top: 12px;
+  padding-left: 17px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--price-text);
+}
+
+/* yaşıl nöqtə */
+.pricing-card__list li::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--price-accent);
+  transition: background-color 0.3s;
+}
+
+.pricing-card:hover .pricing-card__name,
+.pricing-card:hover .pricing-card__price,
+.pricing-card:hover .pricing-card__text,
+.pricing-card:hover .pricing-card__list-title,
+.pricing-card:hover .pricing-card__list li {
+  color: #ffffff;
+}
+
+.pricing-card:hover .pricing-card__list li::before {
+  background: #ffffff;
+}
+
+/* ---------- "Choose Plan" düyməsi (demo-dakı travhub-btn) ---------- */
+.pricing-card__btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7.2px 25px;
+  border-radius: 60px;
+  background: var(--price-accent);
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 33.75px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+/* düymənin öz dolma təbəqələri: dairə aşağı-ortadan böyüyür, sonra bütöv fon */
+.pricing-card__btn::before {
+  content: "";
+  position: absolute;
+  top: -110%;
+  left: -10%;
+  z-index: -1;
+  width: 120%;
+  height: 0;
+  padding-bottom: 120%;
+  border-radius: 50%;
+  background: var(--price-dark);
+  transform: translate3d(0, 68%, 0) scale3d(0, 0, 0);
+}
+
+.pricing-card__btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--price-dark);
+  transform: translate3d(0, -100%, 0);
+  transition: transform 0.4s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+.pricing-card__btn span {
+  position: relative;
+  display: block;
+}
+
+/* kartın üzərinə gələndə düymə ağ dolur, yazı yaşıllaşır və yuxarı çıxıb yenidən girir */
+.pricing-card:hover .pricing-card__btn {
+  color: var(--price-accent);
+}
+
+.pricing-card:hover .pricing-card__btn::before {
+  background: #ffffff;
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  transition: transform 0.4s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+.pricing-card:hover .pricing-card__btn::after {
+  background: #ffffff;
+  transform: translate3d(0, 0, 0);
+  transition-duration: 0.05s;
+  transition-delay: 0.4s;
+  transition-timing-function: linear;
+}
+
+.pricing-card:hover .pricing-card__btn span {
+  animation:
+    pricingTextUp 0.3s ease forwards,
+    pricingTextIn 0.3s ease 0.3s forwards;
+}
+
+@keyframes pricingTextUp {
+  to {
+    transform: translate3d(0, -105%, 0) scale3d(1, 2, 1);
+    opacity: 0;
+  }
+}
+
+@keyframes pricingTextIn {
+  from {
+    transform: translate3d(0, 100%, 0) scale3d(1, 2, 1);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.pricing-card__btn:focus-visible {
+  outline: 2px solid var(--price-dark);
+  outline-offset: 3px;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .pricing-plans { padding: 90px 0; }
+  .pricing-grid {
+    grid-template-columns: minmax(0, 400px);
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-col {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .pricing-card,
+  .pricing-card::after,
+  .pricing-card__btn::before,
+  .pricing-card__btn::after {
+    transition: none !important;
+  }
+
+  .pricing-card:hover .pricing-card__btn span {
+    animation: none;
+  }
+}

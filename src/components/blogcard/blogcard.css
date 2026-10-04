@@ -1,0 +1,179 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@500&family=Roboto:wght@400&display=swap");
+
+/* ================= Bloq kartı ================= */
+.blog-card {
+  --blog-accent: #1bbc9b;
+
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+}
+
+/* giriş: kart ".blog-reveal" qutusundadırsa, qutu ekrana girəndə 20px aşağıdan qalxır
+   (gecikmə JSX-də: hər karta +100ms) */
+.blog-reveal .blog-card {
+  opacity: 0;
+}
+
+.blog-reveal.is-inview .blog-card {
+  animation-name: blogFadeInUp;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+
+@keyframes blogFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Şəkil + hover effekti ---------- */
+.blog-card__thumb {
+  position: relative;
+  overflow: hidden;
+}
+
+/* aşağıya doğru qaralma – mətn oxunsun */
+.blog-card__thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
+}
+
+.blog-card__thumb img {
+  display: block;
+  width: 100%;
+  height: 465px;
+  object-fit: cover;
+  transition: transform 0.5s, opacity 0.5s, filter 0.5s;
+}
+
+/* 1-ci nüsxə gözləyir: sağa uzanmış, şəffaf, bulanıq */
+.blog-card__thumb img:first-child {
+  transform: translateX(50%) scaleX(2);
+  opacity: 0;
+  filter: blur(10px);
+}
+
+/* 2-ci nüsxə görünür */
+.blog-card__thumb img:last-child {
+  position: absolute;
+  inset: 0;
+}
+
+.blog-card:hover .blog-card__thumb img:first-child {
+  transform: translateX(0) scaleX(1);
+  opacity: 1;
+  filter: blur(0);
+}
+
+.blog-card:hover .blog-card__thumb img:last-child {
+  transform: translateX(-50%) scaleX(2);
+  opacity: 0;
+  filter: blur(10px);
+}
+
+/* ---------- Mətn ---------- */
+.blog-card__content {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 40px 34px;
+}
+
+.blog-card__title {
+  margin: 0 0 16px;
+  font-family: "Geologica", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+  color: #ffffff;
+  text-transform: capitalize;
+}
+
+/* hover-də yaşıllaşır, altından xətt soldan sağa uzanır */
+.blog-card__title a {
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 95% / 0 1px;
+  transition: background-size 0.5s, color 0.5s;
+}
+
+.blog-card__title a:hover,
+.blog-card__title a:focus-visible {
+  color: var(--blog-accent);
+  background-size: 100% 1px;
+  outline: none;
+}
+
+.blog-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blog-card__meta li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 30px;
+  color: #ffffff;
+}
+
+/* tarix ilə şərhlər arasındakı nazik xətt */
+.blog-card__meta li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -13px;
+  width: 2px;
+  height: 14px;
+  margin: auto;
+  background: #ffffff;
+  opacity: 0.31;
+}
+
+.blog-card__meta svg {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: var(--blog-accent);
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .blog-card__content { padding: 0 25px 30px; }
+  .blog-card__meta { gap: 18px; }
+  .blog-card__meta li { gap: 6px; font-size: 15px; }
+  .blog-card__meta li:not(:last-child)::before { right: -9px; }
+  .blog-card__meta svg { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-reveal .blog-card {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .blog-card__thumb img,
+  .blog-card__title a {
+    transition: none;
+  }
+}

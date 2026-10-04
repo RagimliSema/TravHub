@@ -1,0 +1,273 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@600;700&family=Roboto:wght@400;500;700&display=swap");
+
+/* ================= Tour Sidebar səhifəsi ================= */
+.tour-sidebar {
+  --ts-accent: #1bbc9b;
+  --ts-dark: #292929;
+  --ts-text: #555555;
+  --ts-border: #e5e3e0;
+
+  padding: 120px 0;
+  background: #ffffff;
+  font-family: "Roboto", sans-serif;
+  color: var(--ts-text);
+}
+
+.tour-sidebar__container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* demo: solda 374px sidebar, sağda 772px kartlar, aralıq 24px */
+.tour-sidebar__row {
+  display: grid;
+  grid-template-columns: minmax(0, 374fr) minmax(0, 772fr);
+  gap: 24px;
+  align-items: start;
+}
+
+/* giriş: hər iki sütun aşağıdan qalxır (0.1s / 0.2s) */
+.tour-sidebar__aside,
+.tour-sidebar__main {
+  opacity: 0;
+}
+
+.tour-sidebar__aside.is-inview {
+  animation: tourSidebarFadeInUp 1s ease 0.1s both;
+}
+
+.tour-sidebar__main.is-inview {
+  animation: tourSidebarFadeInUp 1s ease 0.2s both;
+}
+
+@keyframes tourSidebarFadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= Sidebar ================= */
+/* qutunun özü (çərçivə, başlıq): components/sidebarwidgets/sidebarwidgets.css */
+
+/* ---------- Axtarış forması ---------- */
+.tour-search__control {
+  position: relative;
+  margin: 0 0 20px;
+  padding: 0 0 20px;
+  border-bottom: 1px solid var(--ts-border);
+}
+
+.tour-search__control:last-child {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.tour-search__icon {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 24px;
+  color: var(--ts-text);
+  transition: color 0.4s ease-in-out;
+}
+
+.tour-search__control:hover .tour-search__icon,
+.tour-search__control:focus-within .tour-search__icon {
+  color: var(--ts-accent);
+}
+
+.tour-search__control label {
+  display: block;
+  margin-bottom: -5px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(85, 85, 85, 0.7);
+}
+
+.tour-search__control select,
+.tour-search__control input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 28px;
+  padding: 2px 0;
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: 17px;
+  line-height: normal;
+  color: var(--ts-dark);
+}
+
+.tour-search__control select {
+  appearance: none;
+  padding-right: 20px;
+  cursor: pointer;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23292929' stroke-width='1.6'/></svg>") right center / 12px 8px no-repeat;
+}
+
+.tour-search__control input::placeholder {
+  color: var(--ts-dark);
+  opacity: 1;
+}
+
+.tour-search__control select:focus-visible,
+.tour-search__control input:focus-visible {
+  box-shadow: 0 1px 0 var(--ts-accent);
+}
+
+.tour-search__submit {
+  display: block;
+  width: 100%;
+  height: 60px;
+}
+
+.tour-search__submit svg {
+  position: relative;
+  top: 2px;
+  margin-left: 4px;
+}
+
+/* ---------- "Last Minute" ---------- */
+.last-minute {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.last-minute__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 16px 0 12px;
+}
+
+.last-minute__image {
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.last-minute__price {
+  margin: 0 0 5px;
+  line-height: 1;
+  color: var(--ts-accent);
+}
+
+.last-minute__title {
+  margin: 0 0 5px;
+  font-family: "Geologica", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--ts-dark);
+}
+
+/* hover-də yaşıllaşır, altından xətt uzanır */
+.last-minute__title a {
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 95% / 0 1px no-repeat;
+  transition: background-size 0.5s, color 0.5s;
+}
+
+.last-minute__title a:hover,
+.last-minute__title a:focus-visible {
+  color: var(--ts-accent);
+  background-size: 100% 1px;
+}
+
+.last-minute__location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+/* ================= Sağ tərəf ================= */
+.tour-sidebar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 0 40px;
+}
+
+.tour-sidebar__count {
+  margin: 0;
+  font-family: "Geologica", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ts-dark);
+}
+
+/* sıralama: boz qutu, sağda yaşıl ox */
+.tour-sidebar__sort select {
+  width: 270px;
+  height: 60px;
+  padding: 0 50px 0 30px;
+  border: 0;
+  border-radius: 4px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  background: #f0f0f0 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%231bbc9b' stroke-width='2'/></svg>") right 30px center / 12px 8px no-repeat;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ts-dark);
+  text-transform: capitalize;
+}
+
+.tour-sidebar__sort select:focus-visible {
+  outline: 2px solid var(--ts-accent);
+  outline-offset: 2px;
+}
+
+.tour-sidebar__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.tour-sidebar__more {
+  margin-top: 60px;
+  text-align: center;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .tour-sidebar__row { grid-template-columns: minmax(0, 1fr); gap: 60px; }
+}
+
+@media (max-width: 767px) {
+  .tour-sidebar { padding: 80px 0; }
+
+  .tour-sidebar__top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tour-sidebar__sort,
+  .tour-sidebar__sort select { width: 100%; }
+
+  .tour-sidebar__grid {
+    grid-template-columns: minmax(0, 400px);
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-sidebar__aside,
+  .tour-sidebar__main {
+    opacity: 1;
+    animation: none !important;
+  }
+}

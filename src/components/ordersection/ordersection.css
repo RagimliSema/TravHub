@@ -1,0 +1,146 @@
+/* My Orders – sifariş kartları */
+.order-success {
+  margin: 0 0 30px;
+  padding: 14px 20px;
+  border-radius: 8px;
+  background: rgba(27, 188, 155, 0.1);
+  font-family: "Geologica", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #12866e;
+}
+
+.order-list {
+  display: grid;
+  gap: 24px;
+}
+
+.order-card {
+  padding: 24px 26px;
+  border: 1px solid rgba(41, 41, 41, 0.1);
+  border-radius: 8px;
+  background: #fafafa;
+  transition: border-color 0.4s;
+}
+
+.order-card.is-new {
+  border-color: var(--shop-accent);
+}
+
+.order-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(41, 41, 41, 0.1);
+}
+
+.order-card__number {
+  margin: 0 0 4px;
+  font-family: "Geologica", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--shop-dark);
+}
+
+.order-card__date {
+  font-size: 14px;
+}
+
+/* status nişanı: rəng statusa görə */
+.order-status {
+  flex-shrink: 0;
+  padding: 4px 14px;
+  border-radius: 20px;
+  background: #f0f0f0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--shop-dark);
+}
+
+.order-status--pending { background: #fff4d6; color: #8a6100; }
+.order-status--processing { background: #e3f0ff; color: #1f5fa8; }
+.order-status--shipped { background: #ece6ff; color: #5a3fb0; }
+.order-status--delivered { background: rgba(27, 188, 155, 0.15); color: #12866e; }
+.order-status--cancelled { background: rgba(192, 57, 43, 0.1); color: #c0392b; }
+
+.order-card__items {
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+}
+
+.order-card__item {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+}
+
+.order-card__item img {
+  display: block;
+  width: 64px;
+  height: 52px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.order-card__title {
+  font-family: "Geologica", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--shop-dark);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.order-card__title:hover,
+.order-card__title:focus-visible {
+  color: var(--shop-accent);
+}
+
+.order-card__qty {
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.order-card__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(41, 41, 41, 0.1);
+  font-size: 15px;
+}
+
+.order-card__total {
+  font-family: "Geologica", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--shop-dark);
+}
+
+@media (max-width: 575px) {
+  .order-card {
+    padding: 20px 16px;
+  }
+
+  .order-card__item {
+    grid-template-columns: 52px minmax(0, 1fr);
+  }
+
+  .order-card__item img {
+    width: 52px;
+    height: 44px;
+  }
+
+  .order-card__qty {
+    grid-column: 2;
+  }
+}

@@ -1,0 +1,153 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap");
+
+/* ================= Bölmə ================= */
+/* kartın öz stilləri: components/guidecard/guidecard.css */
+.team-section {
+  --team-accent: #1bbc9b;
+  --team-dark: #292929;
+
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+.team-container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ================= Grid (demo: 4 / 2 / 1 sütun) ================= */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px 24px;
+}
+
+/* kartın öz margin-top-u (77px) avatarın yuxarı çıxan hissəsi üçün yer saxlayır,
+   ona görə sıra hündürlüyü 300px, sıralar arası 30px olur – demo-dakı kimi */
+
+/* ================= "Load More Guide" düyməsi ================= */
+.team-section__more {
+  margin-top: 60px;
+  text-align: center;
+}
+
+/*
+  Hover (demo-dakı travhub-btn):
+  qara dairə aşağı-ortadan böyüyüb düyməni doldurur, sonra bütöv qara fon gəlir;
+  yazı yuxarı çıxıb aşağıdan yenidən girir.
+*/
+.team-section__btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-block;
+  padding: 12px 25px;
+  border-radius: 30px;
+  background: var(--team-accent);
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 34px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.team-section__btn::before {
+  content: "";
+  position: absolute;
+  top: -110%;
+  left: -10%;
+  z-index: -1;
+  width: 120%;
+  height: 0;
+  padding-bottom: 120%;
+  border-radius: 50%;
+  background: var(--team-dark);
+  transform: translate3d(0, 68%, 0) scale3d(0, 0, 0);
+}
+
+.team-section__btn:hover::before,
+.team-section__btn:focus-visible::before {
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  transition: transform 0.4s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+.team-section__btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--team-dark);
+  transform: translate3d(0, -100%, 0);
+  transition: transform 0.4s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+.team-section__btn:hover::after,
+.team-section__btn:focus-visible::after {
+  transform: translate3d(0, 0, 0);
+  transition-duration: 0.05s;
+  transition-delay: 0.4s;
+  transition-timing-function: linear;
+}
+
+.team-section__btn span {
+  position: relative;
+  display: block;
+}
+
+.team-section__btn:hover span,
+.team-section__btn:focus-visible span {
+  animation:
+    teamBtnTextUp 0.3s ease forwards,
+    teamBtnTextIn 0.3s ease 0.3s forwards;
+}
+
+@keyframes teamBtnTextUp {
+  to {
+    transform: translate3d(0, -105%, 0) scale3d(1, 2, 1);
+    opacity: 0;
+  }
+}
+
+@keyframes teamBtnTextIn {
+  from {
+    transform: translate3d(0, 100%, 0) scale3d(1, 2, 1);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.team-section__btn:focus-visible {
+  outline: 2px solid var(--team-dark);
+  outline-offset: 3px;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .team-section { padding: 90px 0; }
+  .team-grid {
+    grid-template-columns: minmax(0, 360px);
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-section__btn::before,
+  .team-section__btn::after {
+    transition: none;
+  }
+
+  .team-section__btn:hover span {
+    animation: none;
+  }
+}

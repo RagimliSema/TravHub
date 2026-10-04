@@ -1,0 +1,34 @@
+/* ================= Bölmə ================= */
+/* kartın öz stilləri: components/guidecard/guidecard.css */
+.guide-section {
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+.guide-container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ================= Grid ================= */
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 991px) {
+  .guide-section { padding: 90px 0; }
+  .guide-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 575px) {
+  .guide-section { padding: 60px 0; }
+  .guide-grid {
+    grid-template-columns: minmax(0, 320px);
+    justify-content: center;
+  }
+}

@@ -1,0 +1,56 @@
+/* ================= Yana sürüşən kart sırası ================= */
+/* --per-view (görünən kart sayı) və --gap hər bölmənin öz CSS-ində verilir */
+.snap-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  gap: var(--gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Firefox */
+}
+
+.snap-row::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.snap-row > * {
+  scroll-snap-align: start;
+}
+
+/* ================= Nöqtələr (demo-dakı kimi) ================= */
+.snap-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.snap-dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(27, 188, 155, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.snap-dot:hover,
+.snap-dot.is-active {
+  background: #1bbc9b;
+}
+
+.snap-dot:focus-visible {
+  outline: 2px solid #1bbc9b;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snap-dot {
+    transition: none;
+  }
+}

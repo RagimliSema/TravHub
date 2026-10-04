@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700&family=Roboto:wght@400&display=swap");
+
+/* ================= Bölmə ================= */
+.testimonial {
+  --tm-accent: #28ce9b;
+  --tm-dark: #282828;
+  --tm-text: #555555;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 120px 0;
+  background: #f0f0f0;
+}
+
+.tm-container {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  display: grid;
+  grid-template-columns: 528fr 566fr;
+  align-items: center;
+  gap: 75px;
+}
+
+/* ================= Şəkil kollajı ================= */
+/* 528x603 sahə; hər şey faizlədir – kiçik ekranda birlikdə kiçilir */
+.tm-collage {
+  position: relative;
+  width: 100%;
+  max-width: 528px;
+  aspect-ratio: 528 / 603;
+}
+
+.tm-img {
+  position: absolute;
+
+  /* giriş: aşağıdan qalxaraq görünür (gecikmə JSX-də) */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.tm-collage.is-inview .tm-img {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tm-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+
+  /* yerində yavaşca üzür */
+  animation: tm-float 3s ease-in-out infinite;
+}
+
+.tm-img--left   { left: 0;     top: 17.6%; width: 30.1%; height: 37.6%; }
+.tm-img--top    { left: 34.8%; top: 0;     width: 30.1%; height: 37.3%; }
+.tm-img--middle { left: 34.8%; top: 42.1%; width: 30.3%; aspect-ratio: 1; }
+.tm-img--bottom { left: 34.8%; top: 73.5%; width: 30.3%; aspect-ratio: 1; }
+.tm-img--right  { left: 69.9%; top: 28.5%; width: 30.1%; height: 37.6%; }
+
+/* hamısı eyni anda qalxıb-enməsin deyə fərqli başlanğıc */
+.tm-img--top img    { animation-delay: -0.8s; }
+.tm-img--middle img { animation-delay: -1.6s; }
+.tm-img--right img  { animation-delay: -2.2s; }
+.tm-img--bottom img { animation-delay: -1.2s; }
+
+@keyframes tm-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* yaşıl qıvrım ox */
+.tm-arrow {
+  position: absolute;
+  left: 19.3%;
+  top: 67.3%;
+  width: 11.6%;
+  height: auto;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.6s;
+}
+
+.tm-collage.is-inview .tm-arrow {
+  opacity: 1;
+}
+
+/* ================= Rəy ================= */
+.tm-content {
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.tm-content.is-inview {
+  opacity: 1;
+}
+
+.tm-quote {
+  display: grid;
+  place-items: center;
+  width: 69px;
+  height: 69px;
+  border-radius: 50%;
+  background: var(--tm-accent);
+  color: #ffffff;
+}
+
+.tm-text {
+  margin: 30px 0 56px;
+  font-family: "Red Hat Display", sans-serif;
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 65px;
+  color: var(--tm-dark);
+}
+
+.tm-author {
+  display: grid;
+  gap: 6px;
+  padding-left: 45px;
+}
+
+/* adın solundakı qısa xətt */
+.tm-author__name {
+  position: relative;
+  font-family: "Red Hat Display", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--tm-dark);
+}
+
+.tm-author__name::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -45px;
+  width: 30px;
+  height: 2px;
+  background: var(--tm-dark);
+}
+
+.tm-author__role {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--tm-text);
+}
+
+/* ================= Şəhər siluetləri ================= */
+.tm-moving-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tm-moving {
+  position: relative;
+  left: -13%;
+  display: block;
+  width: 126%;
+  max-width: 126%;
+  height: auto;
+  animation: tm-wave-sway 8s ease-in-out infinite;
+}
+
+@keyframes tm-wave-sway {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4%);
+  }
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .tm-container { gap: 50px; }
+  .tm-text { font-size: 34px; line-height: 50px; }
+}
+
+/* planşet və telefon: kollaj üstdə, mətn altda */
+@media (max-width: 991px) {
+  .testimonial { padding: 80px 0 140px; }
+
+  .tm-container {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 50px;
+  }
+
+  .tm-content { max-width: 600px; }
+}
+
+@media (max-width: 575px) {
+  .testimonial { padding: 60px 0 100px; }
+  .tm-quote { width: 56px; height: 56px; }
+  .tm-quote svg { width: 30px; }
+  .tm-text { margin: 24px 0 36px; font-size: 24px; line-height: 38px; }
+  .tm-author__name { font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-img,
+  .tm-arrow,
+  .tm-content {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .tm-img img,
+  .tm-moving {
+    animation: none;
+  }
+}

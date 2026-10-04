@@ -1,0 +1,505 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@500;700&family=Roboto:wght@400;500;600&display=swap");
+
+/* ================= Destination Details səhifəsi ================= */
+.destination-details {
+  --dd-accent: #1bbc9b;
+  --dd-dark: #292929;
+  --dd-text: #555555;
+  --dd-border: #e5e3e0;
+
+  padding: 120px 0;
+  background: #ffffff;
+  font-family: "Roboto", sans-serif;
+  color: var(--dd-text);
+}
+
+.destination-details__container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ================= Qalereya (6 şəkil) ================= */
+/* demo-dakı sütun enləri: 20.5% / 19.2% / 39.8% / 20.5%, aralıq 16px */
+.dd-gallery {
+  display: grid;
+  grid-template-columns: 227fr 212fr 456fr 227fr;
+  gap: 16px;
+}
+
+.dd-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 16px;
+  border-radius: 12px;
+}
+
+/* ================= Məzmun + sidebar ================= */
+.destination-details__row {
+  display: grid;
+  grid-template-columns: minmax(0, 770fr) minmax(0, 370fr);
+  gap: 30px;
+  align-items: start;
+  margin-top: 25px;
+}
+
+/* giriş: qalereya 0.1s, məzmun 0.2s aşağıdan, sidebar 0.3s sağdan */
+.dd-gallery,
+.destination-details__main,
+.destination-details__aside {
+  opacity: 0;
+}
+
+.dd-gallery.is-inview {
+  animation: ddFadeInUp 1s ease 0.1s both;
+}
+
+.destination-details__main.is-inview {
+  animation: ddFadeInUp 1s ease 0.2s both;
+}
+
+.destination-details__aside.is-inview {
+  animation: ddFadeInRight 1s ease 0.3s both;
+}
+
+@keyframes ddFadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ddFadeInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.dd-title {
+  margin: 0 0 16px;
+  font-family: "Geologica", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dd-dark);
+}
+
+.dd-text {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 26px;
+}
+
+/* ---------- Ünvan / dil / valyuta / məsafə ---------- */
+.dd-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 36px 0 60px;
+  padding: 0;
+  border: 1px solid var(--dd-border);
+  border-radius: 8px;
+  list-style: none;
+}
+
+.dd-info li {
+  flex: 1 1 0%;
+  margin: 30px 0;
+  padding: 0 45px;
+}
+
+.dd-info li:first-child {
+  flex: 1 1 17%;
+}
+
+.dd-info li + li {
+  border-left: 1px solid var(--dd-border);
+}
+
+.dd-info__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 0 11px;
+  border-radius: 50%;
+  background: rgba(27, 188, 155, 0.12);
+  font-size: 16px;
+  color: var(--dd-accent);
+  transition: background-color 0.5s, color 0.5s;
+}
+
+/* hover-də ikon yaşıllaşır və qısa titrəyir */
+.dd-info li:hover .dd-info__icon {
+  background: var(--dd-accent);
+  color: #ffffff;
+  animation: ddShake 0.3s ease-in-out;
+}
+
+@keyframes ddShake {
+  0%, 100% { transform: translateX(0); }
+  25%, 75% { transform: translateX(5px); }
+  50% { transform: translateX(10px); }
+}
+
+.dd-info__title {
+  margin: 0 0 5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dd-dark);
+  text-transform: capitalize;
+}
+
+.dd-info__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+/* ---------- Video ---------- */
+.dd-video {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 60px;
+  border-radius: 10px;
+}
+
+.dd-video::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.dd-video > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.dd-video__btn {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  overflow: hidden;
+  width: 92px;
+  height: 92px;
+  margin: auto;
+  border-radius: 50%;
+  transition: transform 0.5s;
+}
+
+.dd-video__btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dd-video__btn:hover,
+.dd-video__btn:focus-visible {
+  transform: scale(0.9);
+}
+
+/* ---------- Qiymət paketləri (hover-də yaşıl dolur) ---------- */
+.dd-pricing {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin: 30px 0 50px;
+}
+
+.dd-plan {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 34px 30px 33px;
+  border: 1px solid var(--dd-border);
+  border-radius: 16px;
+  background: #f1f4fa;
+  text-align: center;
+  transition: border-color 0.5s;
+}
+
+.dd-plan:hover {
+  border-color: var(--dd-accent);
+}
+
+.dd-plan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  width: 100%;
+  height: 0;
+  background: var(--dd-accent);
+  transition: height 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) 0.2s;
+}
+
+.dd-plan:hover::after {
+  top: 0;
+  bottom: auto;
+  height: 100%;
+}
+
+.dd-plan__name,
+.dd-plan__price,
+.dd-plan__text,
+.dd-plan__list-title,
+.dd-plan__list li {
+  transition: color 0.3s;
+}
+
+.dd-plan__name {
+  margin: 0 0 9px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.dd-plan__price {
+  margin: 0 0 13px;
+  font-family: "Geologica", sans-serif;
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -1.07px;
+  color: var(--dd-dark);
+}
+
+.dd-plan__text {
+  margin: 0 0 28px;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: -0.39px;
+}
+
+.dd-plan__btn {
+  display: block;
+  width: 100%;
+  padding: 6px 25px;
+  border-radius: 54px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.dd-plan__list-title {
+  margin: 19px 0 11px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--dd-dark);
+  text-align: left;
+}
+
+.dd-plan__list {
+  margin: 0 -10px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.dd-plan__list li {
+  position: relative;
+  margin-top: 10px;
+  padding-left: 17px;
+  font-size: 15px;
+  line-height: 21px;
+}
+
+.dd-plan__list li::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dd-accent);
+  transition: background-color 0.3s;
+}
+
+.dd-plan:hover .dd-plan__name,
+.dd-plan:hover .dd-plan__price,
+.dd-plan:hover .dd-plan__text,
+.dd-plan:hover .dd-plan__list-title,
+.dd-plan:hover .dd-plan__list li {
+  color: #ffffff;
+}
+
+.dd-plan:hover .dd-plan__list li::before {
+  background: #ffffff;
+}
+
+/* kartın üzərinə gələndə düymə ağ dolur, yazı yaşıllaşır və yuxarı çıxıb yenidən girir */
+.dd-plan:hover .dd-plan__btn {
+  color: var(--dd-accent);
+}
+
+.dd-plan:hover .dd-plan__btn::before {
+  background: #ffffff;
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  transition: transform 0.4s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+.dd-plan:hover .dd-plan__btn::after {
+  background: #ffffff;
+  transform: translate3d(0, 0, 0);
+  transition-duration: 0.05s;
+  transition-delay: 0.4s;
+  transition-timing-function: linear;
+}
+
+.dd-plan:hover .dd-plan__btn span {
+  animation:
+    travhubBtnTextUp 0.3s ease forwards,
+    travhubBtnTextIn 0.3s ease 0.3s forwards;
+}
+
+/* ---------- Sual-cavab ---------- */
+.dd-accordion {
+  margin: 32px 0 60px;
+}
+
+.dd-accordion__item {
+  margin-top: 16px;
+}
+
+.dd-accordion__heading {
+  margin: 0;
+}
+
+.dd-accordion__title {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 17px 60px 17px 20px;
+  border: 1px solid var(--dd-border);
+  border-radius: 12px;
+  background: transparent;
+  font-family: "Geologica", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--dd-dark);
+  text-align: left;
+  cursor: pointer;
+}
+
+.dd-accordion__title:focus-visible {
+  outline: 2px solid var(--dd-accent);
+  outline-offset: 3px;
+}
+
+.dd-accordion__icon {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  width: 17px;
+  height: 17px;
+  transform: translateY(-50%);
+}
+
+.dd-accordion__icon::before,
+.dd-accordion__icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--dd-dark);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s;
+}
+
+.dd-accordion__icon::before {
+  width: 2px;
+  height: 16px;
+}
+
+.dd-accordion__icon::after {
+  width: 16px;
+  height: 2px;
+}
+
+.dd-accordion__item.is-active .dd-accordion__icon::before {
+  opacity: 0;
+}
+
+.dd-accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.dd-accordion__item.is-active .dd-accordion__panel {
+  grid-template-rows: 1fr;
+}
+
+.dd-accordion__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dd-accordion__panel-inner p {
+  margin: 0;
+  padding: 16px 20px 12px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* ---------- Xəritə ---------- */
+.dd-map {
+  overflow: hidden;
+  margin-top: 30px;
+  background: #f0f0f0;
+}
+
+.dd-map iframe {
+  display: block;
+  width: 100%;
+  height: 476px;
+  border: 0;
+  mix-blend-mode: luminosity;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .dd-info li { padding: 0 30px; }
+  .dd-pricing { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 991px) {
+  .destination-details__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 60px;
+  }
+}
+
+@media (max-width: 767px) {
+  .destination-details { padding: 80px 0; }
+  .dd-info { flex-direction: column; }
+  .dd-info li + li { border-left: 0; }
+  .dd-pricing { grid-template-columns: minmax(0, 1fr); }
+  .dd-map iframe { height: 400px; }
+}
+
+@media (max-width: 574px) {
+  .dd-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dd-gallery,
+  .destination-details__main,
+  .destination-details__aside {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .dd-info li:hover .dd-info__icon,
+  .dd-plan:hover .dd-plan__btn span { animation: none; }
+
+  .dd-plan,
+  .dd-plan::after,
+  .dd-accordion__panel { transition: none; }
+}

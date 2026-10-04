@@ -1,0 +1,365 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@600&family=Roboto:wght@400;500&display=swap");
+
+/* ================= 1. Əlaqə məlumatları ================= */
+.contact-info {
+  --ct-accent: #1bbc9b;
+  --ct-dark: #292929;
+  --ct-text: #555555;
+  --ct-border: #e5e3e0;
+
+  padding: 120px 0 0;
+  background: #ffffff;
+  font-family: "Roboto", sans-serif;
+}
+
+.contact-info__container,
+.contact-page__container {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.contact-info__list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ct-border);
+  border-radius: 12px;
+  list-style: none;
+}
+
+.contact-info__item {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 0%;
+  padding: 42px 15px 37px;
+  text-align: center;
+}
+
+.contact-info__item + .contact-info__item {
+  border-left: 1px solid var(--ct-border);
+}
+
+/* altda ortada sağa-sola yırğalanan kiçik yaşıl kvadrat */
+.contact-info__item::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 10px;
+  z-index: -1;
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  background: var(--ct-accent);
+  animation: contactDotMove 3s linear infinite;
+}
+
+@keyframes contactDotMove {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-15px); }
+}
+
+/* ikon: yaşıl kvadrat + arxasında qırıq xətli çərçivə */
+.contact-info__icon {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 63px;
+  height: 63px;
+  margin: 0 auto 17px;
+  border-radius: 11px;
+  background: var(--ct-accent);
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.contact-info__icon::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed var(--ct-accent);
+  border-radius: 11px;
+}
+
+.contact-info__item:hover .contact-info__icon {
+  animation: contactShake 0.3s ease-in-out;
+}
+
+@keyframes contactShake {
+  0%, 100% { transform: translateX(0); }
+  25%, 75% { transform: translateX(5px); }
+  50% { transform: translateX(10px); }
+}
+
+.contact-info__title {
+  margin: 0 0 15px;
+  font-family: "Geologica", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--ct-dark);
+  text-transform: capitalize;
+}
+
+.contact-info__text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--ct-text);
+}
+
+.contact-info__text a {
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 95% / 0 1px no-repeat;
+  transition: background-size 0.5s, color 0.5s;
+}
+
+.contact-info__text a:hover,
+.contact-info__text a:focus-visible {
+  color: var(--ct-accent);
+  background-size: 100% 1px;
+}
+
+/* ================= 2. Şəkil + forma ================= */
+.contact-page {
+  --ct-accent: #1bbc9b;
+  --ct-dark: #292929;
+  --ct-text: #555555;
+  --ct-border: #e5e3e0;
+
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0;
+  background: #ffffff;
+  font-family: "Roboto", sans-serif;
+}
+
+/* solda yuxarı-aşağı yırğalanan fiqur (1300px-dən geniş ekranda) */
+.contact-page__shape {
+  position: absolute;
+  top: 250px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: left top;
+  background-repeat: no-repeat;
+  animation: contactShapeMove 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes contactShapeMove {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.contact-page__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+  align-items: center;
+}
+
+/* giriş: şəkil aşağıdan (0.1s), forma sağdan (0.2s) */
+.contact-page__media-col,
+.contact-page__form-col {
+  opacity: 0;
+}
+
+.contact-page__media-col.is-inview {
+  animation: contactFadeInUp 1s ease 0.1s both;
+}
+
+.contact-page__form-col.is-inview {
+  animation: contactFadeInRight 1s ease 0.2s both;
+}
+
+@keyframes contactFadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes contactFadeInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ---------- Şəkillər (Login səhifəsindəki kimi fırça kənarlı) ---------- */
+.contact-media {
+  position: relative;
+  z-index: 1;
+  max-width: 587px;
+  margin-left: 45px;
+}
+
+.contact-media__main {
+  -webkit-mask: url("../../assets/image/login-mask.svg") center / contain no-repeat;
+  mask: url("../../assets/image/login-mask.svg") center / contain no-repeat;
+}
+
+.contact-media__main img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.contact-media__man,
+.contact-media__cloud,
+.contact-media__cloud-two {
+  position: absolute;
+  display: block;
+}
+
+.contact-media__man {
+  bottom: 0;
+  left: -80px;
+}
+
+.contact-media__cloud {
+  top: 55px;
+  right: 55px;
+}
+
+.contact-media__cloud-two {
+  top: 47%;
+  right: -80px;
+}
+
+/* ---------- Forma ---------- */
+.contact-page .section-title {
+  margin-bottom: 32px;
+}
+
+.contact-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 25px;
+}
+
+.contact-form__control--full {
+  grid-column: 1 / -1;
+}
+
+.contact-form__control label {
+  display: block;
+  margin: 0 0 5px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--ct-dark);
+  cursor: pointer;
+}
+
+.contact-form__control input,
+.contact-form__control textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding: 0 20px;
+  border: 1px solid var(--ct-border);
+  border-radius: 8px;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 16px;
+  color: rgba(85, 85, 85, 0.6);
+  transition: color 0.4s, border-color 0.4s;
+}
+
+.contact-form__control textarea {
+  height: 135px;
+  padding-top: 8px;
+  border-radius: 12px;
+  resize: vertical;
+}
+
+.contact-form__control input:focus,
+.contact-form__control textarea:focus {
+  border-color: var(--ct-accent);
+  color: var(--ct-text);
+}
+
+.contact-form__submit {
+  padding: 7.2px 25px;
+  border-radius: 8px;
+}
+
+/* ================= 3. Xəritə ================= */
+.contact-map {
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.contact-map iframe {
+  display: block;
+  width: 100%;
+  height: 694px;
+  border: 0;
+  mix-blend-mode: luminosity;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1300px) {
+  .contact-page__shape { display: none; }
+}
+
+@media (max-width: 1199px) {
+  .contact-media__man { bottom: -80px; }
+}
+
+@media (max-width: 991px) {
+  .contact-info__list { flex-wrap: wrap; }
+  .contact-info__item { flex: 1 1 50%; }
+  .contact-info__item::after { display: none; }
+  .contact-info__item:nth-child(3) { border-left: 0; }
+
+  .contact-page__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 50px;
+  }
+
+  .contact-media__man { bottom: 0; }
+}
+
+@media (max-width: 767px) {
+  .contact-info { padding-top: 80px; }
+  .contact-info__item { flex: 1 1 100%; }
+  .contact-info__item + .contact-info__item { border-left: 0; border-top: 1px solid var(--ct-border); }
+
+  .contact-page { padding: 80px 0; }
+  .contact-media { margin-left: 0; }
+
+  .contact-media__man,
+  .contact-media__cloud,
+  .contact-media__cloud-two { display: none; }
+
+  .contact-map iframe { height: 500px; }
+}
+
+@media (max-width: 575px) {
+  .contact-form { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-page__media-col,
+  .contact-page__form-col {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .contact-info__item::after,
+  .contact-info__item:hover .contact-info__icon,
+  .contact-page__shape { animation: none; }
+}

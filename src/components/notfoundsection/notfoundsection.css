@@ -1,0 +1,123 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@700&family=Roboto:wght@400&display=swap");
+
+/* ================= Bölmə ================= */
+.not-found {
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+.not-found__container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* demo: iki bərabər sütun (768px-dən), şaquli ortada */
+.not-found__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+  align-items: center;
+}
+
+/* ================= Şəkil ================= */
+.not-found__image {
+  padding-right: 35px;
+  text-align: right;
+}
+
+/* "404" şəkli dayanmadan sağa-sola yırğalanır */
+.not-found__image img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  animation: notFoundMove 3s linear infinite;
+}
+
+@keyframes notFoundMove {
+  0%,
+  100% { transform: translateX(0); }
+  50% { transform: translateX(-15px); }
+}
+
+/* ================= Mətn ================= */
+.not-found__title {
+  margin: 0 0 6px;
+  font-family: "Geologica", sans-serif;
+  font-size: 70px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #292929;
+}
+
+.not-found__subtitle {
+  margin: 0 0 10px;
+  font-family: "Geologica", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #292929;
+}
+
+.not-found__text {
+  margin: 0 0 30px;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  color: #555555;
+}
+
+/* ================= Giriş animasiyaları ================= */
+.not-found__image,
+.not-found__content {
+  opacity: 0;
+}
+
+.not-found__image.is-inview {
+  animation: notFoundFadeInUp 1s ease 0.1s both;
+}
+
+.not-found__content.is-inview {
+  animation: notFoundFadeInRight 1s ease 0.2s both;
+}
+
+@keyframes notFoundFadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes notFoundFadeInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 991px) {
+  .not-found__image { padding-right: 0; }
+  .not-found__text br { display: none; }
+}
+
+@media (max-width: 767px) {
+  .not-found { padding: 80px 0; }
+
+  .not-found__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .not-found__image,
+  .not-found__content { text-align: center; }
+
+  .not-found__title { font-size: 56px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found__image,
+  .not-found__content {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .not-found__image img { animation: none; }
+}

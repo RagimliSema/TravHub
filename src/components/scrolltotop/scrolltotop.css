@@ -1,0 +1,77 @@
+/* ================= Yuxarı qalx düyməsi ================= */
+.scroll-top {
+  --scroll-top-accent: #1bbc9b;
+
+  position: fixed;
+  right: 30px;
+  bottom: calc(30px + env(safe-area-inset-bottom, 0px));
+  z-index: 99;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: var(--scroll-top-accent);
+
+  /* gizli vəziyyət: bir az aşağıda və şəffaf */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+  transition: opacity 0.2s linear, visibility 0.2s linear, transform 0.2s linear;
+}
+
+.scroll-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* arxadakı solğun halqa */
+.scroll-top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 2px solid rgba(27, 188, 155, 0.3);
+  border-radius: 50%;
+}
+
+/* scroll-a görə dolan yaşıl halqa */
+.scroll-top__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-top__ring path {
+  fill: none;
+  stroke: var(--scroll-top-accent);
+  stroke-width: 4;
+  transition: stroke-dashoffset 10ms linear;
+}
+
+.scroll-top__icon {
+  position: relative;
+  z-index: 1;
+  font-size: 18px;
+}
+
+.scroll-top:focus-visible {
+  outline: 2px solid var(--scroll-top-accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 575px) {
+  .scroll-top {
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-top,
+  .scroll-top__ring path {
+    transition: none;
+  }
+}

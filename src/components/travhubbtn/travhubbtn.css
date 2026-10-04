@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap");
+
+/*
+  Ümumi yaşıl düymə (demo-dakı travhub-btn). İstifadə:
+    <Link to="/" className="travhub-btn"><span>Mətn</span></Link>
+  Hover: qara dairə aşağı-ortadan böyüyüb düyməni doldurur, sonra bütöv qara fon gəlir;
+  yazı yuxarı çıxıb aşağıdan yenidən girir.
+*/
+.travhub-btn {
+  --btn-bg: #1bbc9b;
+  --btn-hover: #292929;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 12px 25px;
+  border: 0;
+  border-radius: 30px;
+  background: var(--btn-bg);
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 33.75px;
+  color: #ffffff;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: top; /* altında sətir boşluğu qalmasın */
+  cursor: pointer;
+}
+
+.travhub-btn::before {
+  content: "";
+  position: absolute;
+  top: -110%;
+  left: -10%;
+  z-index: -1;
+  width: 120%;
+  height: 0;
+  padding-bottom: 120%;
+  border-radius: 50%;
+  background: var(--btn-hover);
+  transform: translate3d(0, 68%, 0) scale3d(0, 0, 0);
+}
+
+.travhub-btn:hover::before,
+.travhub-btn:focus-visible::before {
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  transition: transform 0.4s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+.travhub-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-hover);
+  transform: translate3d(0, -100%, 0);
+  transition: transform 0.4s cubic-bezier(0.1, 0, 0.3, 1);
+}
+
+.travhub-btn:hover::after,
+.travhub-btn:focus-visible::after {
+  transform: translate3d(0, 0, 0);
+  transition-duration: 0.05s;
+  transition-delay: 0.4s;
+  transition-timing-function: linear;
+}
+
+.travhub-btn span {
+  position: relative;
+  display: block;
+}
+
+.travhub-btn:hover span,
+.travhub-btn:focus-visible span {
+  animation:
+    travhubBtnTextUp 0.3s ease forwards,
+    travhubBtnTextIn 0.3s ease 0.3s forwards;
+}
+
+@keyframes travhubBtnTextUp {
+  to {
+    transform: translate3d(0, -105%, 0) scale3d(1, 2, 1);
+    opacity: 0;
+  }
+}
+
+@keyframes travhubBtnTextIn {
+  from {
+    transform: translate3d(0, 100%, 0) scale3d(1, 2, 1);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.travhub-btn:focus-visible {
+  outline: 2px solid var(--btn-hover);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .travhub-btn::before,
+  .travhub-btn::after {
+    transition: none !important;
+  }
+
+  .travhub-btn:hover span,
+  .travhub-btn:focus-visible span {
+    animation: none;
+  }
+}

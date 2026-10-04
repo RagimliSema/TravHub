@@ -1,0 +1,1215 @@
+/* hero.css ilə eyni URL — brauzer bir dəfə yükləyir */
+@import url("https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Montserrat:wght@700;800&family=Roboto:wght@400;500;700&display=swap");
+
+/* =========================================
+   HEADER
+   - Rənglər hero.css-dəki :root dəyişənlərindən gəlir,
+     yoxdursa fallback işləyir.
+   - z-index: dropdown-lar hero-nun (şəkillər, təyyarə) üstündə açılsın.
+========================================= */
+
+.header {
+  --hd-accent: var(--accent, #28ce9b);
+  --hd-dark: #282828;
+  --hd-title: var(--dark, #222);
+  --hd-text: #666;
+  --hd-radius: 30px;
+
+  position: relative;
+  z-index: 100;
+
+  font-family: "Roboto", sans-serif;
+  background: var(--hd-dark);
+}
+
+/* reset-lər :where() ilə — specificity 0 olur,
+   aşağıdakı class-ların rənglərini əzmir */
+:where(.header) *,
+:where(.header) *::before,
+:where(.header) *::after {
+  box-sizing: border-box;
+}
+
+:where(.header) ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:where(.header) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:where(.header) button {
+  font-family: inherit;
+}
+
+.header-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* =========================================
+   TOP BAR
+========================================= */
+
+.header-top {
+  color: #e0e0e0;
+  font-size: 16px;
+  line-height: 23px;
+}
+
+.header-top-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.header-top-info {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.header-top-info li,
+.header-top-hours {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-top svg {
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 18px;
+}
+
+.header-top a {
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.header-top a:hover {
+  color: var(--hd-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.header-top-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* yalnız adminlərə görünən kiçik yaşıl "Admin Panel" düyməsi */
+.header-top .header-top-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 3px 12px;
+  border-radius: 20px;
+  background: var(--hd-accent);
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.header-top .header-top-admin svg {
+  font-size: 14px;
+  color: #fff;
+}
+
+.header-top .header-top-admin:hover,
+.header-top .header-top-admin:focus-visible {
+  background: #fff;
+  color: var(--hd-title);
+  text-decoration: none;
+}
+
+.header-top .header-top-admin:hover svg,
+.header-top .header-top-admin:focus-visible svg {
+  color: var(--hd-title);
+}
+
+/* =========================================
+   MAIN BAR
+   Loqo yaşıl blokdur (sol-yuxarı + sağ-aşağı yumru).
+   Ağ panel loqonun altına 30px girir ki, loqonun
+   sağ-aşağı yumru küncünün arxası ağ görünsün.
+========================================= */
+
+.header-main-inner {
+  display: flex;
+  align-items: stretch;
+  min-height: 95px;
+}
+
+.header-logo {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 200px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  color: #fff;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+
+  background: var(--hd-accent);
+  border-radius: var(--hd-radius) 0 var(--hd-radius) 0;
+}
+
+.header-logo svg {
+  font-size: 36px;
+}
+
+.header-bar {
+  flex: 1 1 auto;
+  min-width: 0;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+
+  margin-left: calc(var(--hd-radius) * -1);
+  padding: 0 24px 0 calc(var(--hd-radius) + 20px);
+
+  background: #fff;
+  border-top-right-radius: 24px;
+}
+
+/* =========================================
+   STICKY BAR
+   Yuxarı scroll edəndə ekranın başında sabitlənən nüsxə
+   (demo-dakı .sticky-header--cloned). Adi vaxtda ekranın
+   üstündə gizlənir, .is-visible olanda aşağı sürüşüb gəlir.
+========================================= */
+
+.header-sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+
+  background: #fff;
+  box-shadow: 0 3px 18px rgba(41, 41, 41, 0.07);
+
+  visibility: hidden;
+  transform: translateY(-100%);
+  transition:
+    transform 0.5s ease,
+    visibility 0.5s;
+}
+
+.header-sticky.is-visible {
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* =========================================
+   NAV
+   li-lər panelin tam hündürlüyündədir: dropdown
+   düz panelin alt xəttindən açılır və mouse
+   linkdən dropdown-a keçəndə menyu bağlanmır.
+========================================= */
+
+.main-nav,
+.main-nav-list {
+  display: flex;
+  align-items: stretch;
+}
+
+.main-nav-item {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 16px;
+}
+
+.main-nav-link {
+  display: block;
+  padding: 10px 0;
+
+  color: var(--hd-title);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  transition: color 0.3s ease;
+}
+
+.main-nav-item:hover > .main-nav-link,
+.main-nav-item:has(:focus-visible) > .main-nav-link {
+  color: var(--hd-accent);
+}
+
+/* açıq olan səhifənin linki (məs. About səhifəsində ABOUT) */
+.main-nav-link.is-active,
+.mobile-nav-link.is-active {
+  color: var(--hd-accent);
+}
+
+/* =========================================
+   DROPDOWN
+   Yuxarıdan aşağı "açılır": scaleY(0) → scaleY(1)
+========================================= */
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: -25px;
+  z-index: 10;
+
+  min-width: 270px;
+  padding: 15px 20px 11px;
+
+  background: #fff;
+  box-shadow: 0 10px 60px rgba(0, 0, 0, 0.07);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: scaleY(0);
+  transform-origin: top center;
+
+  transition:
+    transform 0.7s ease,
+    opacity 0.5s ease,
+    visibility 0.5s;
+}
+
+.main-nav-item:hover > .dropdown,
+.main-nav-item:has(:focus-visible) > .dropdown,
+.dropdown-item:hover > .dropdown,
+.dropdown-item:has(:focus-visible) > .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleY(1);
+}
+
+.dropdown-item {
+  position: relative;
+}
+
+/* ikinci səviyyə (məs. News Grid → No / Left / Right Sidebar): yan tərəfə açılır */
+.dropdown--sub {
+  top: 0;
+  left: calc(100% + 20px);
+}
+
+/* ekranın sağ kənarına yaxın olan menyuda (News) dar ekranda ikinci səviyyə sola açılır */
+@media (max-width: 1359.98px) {
+  .main-nav-item--flip .dropdown--sub {
+    left: auto;
+    right: calc(100% + 20px);
+  }
+}
+
+.dropdown-link {
+  position: relative;
+  display: flex;
+  margin-bottom: 4px;
+  padding: 8px 20px;
+
+  color: var(--hd-text);
+  font-size: 14px;
+  line-height: 26px;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  transition:
+    color 0.4s ease,
+    background-color 0.4s ease;
+}
+
+/* sağda kiçik yaşıl nöqtə – üzərinə gələndə və açıq səhifədə görünür */
+.dropdown-link::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 20px;
+
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+
+  border-radius: 50%;
+  background: var(--hd-accent);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0);
+
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s,
+    transform 0.5s ease;
+}
+
+.dropdown-item:hover > .dropdown-link,
+.dropdown-link:focus-visible,
+.dropdown-link.is-active {
+  color: var(--hd-title);
+  background: #f0f0f0;
+}
+
+.dropdown-item:hover > .dropdown-link::after,
+.dropdown-link:focus-visible::after,
+.dropdown-link.is-active::after {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+/* =========================================
+   ACTIONS (search + button + burger)
+========================================= */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.header-search-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  margin-left: 4px;
+  padding: 0;
+
+  color: var(--hd-title);
+  font-size: 19px;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  transition: color 0.3s ease;
+}
+
+.header-search-btn:hover,
+.header-search-btn:focus-visible {
+  color: var(--hd-accent);
+}
+
+/* hesab və səbət ikonları – axtarış düyməsi ilə eyni ölçü və rəng */
+.header-icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 40px;
+  height: 40px;
+
+  color: var(--hd-title);
+  font-size: 19px;
+
+  transition: color 0.3s ease;
+}
+
+.header-icon-btn:hover,
+.header-icon-btn:focus-visible {
+  color: var(--hd-accent);
+}
+
+/* daxil olub: ikonun küncündə kiçik yaşıl nöqtə */
+.header-account.is-logged-in::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 9px;
+
+  width: 7px;
+  height: 7px;
+
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  background: var(--hd-accent);
+}
+
+/* səbətdəki məhsul sayı */
+.header-cart__count {
+  position: absolute;
+  top: 3px;
+  right: 0;
+
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  box-sizing: border-box;
+
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+
+  background: var(--hd-accent);
+  border-radius: 9px;
+}
+
+.header-booking {
+  margin-left: 22px;
+}
+
+/* =========================================
+   START BOOKING BUTTON
+   ::before → hover-də aşağı-ortadan böyüyən qara dairə
+   ::after  → mouse çıxanda yuxarı çəkilən qara fon
+   Hər state-in öz transition-u var, ona görə giriş
+   və çıxış animasiyaları fərqli görünür.
+========================================= */
+
+.btn-booking {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 161px;
+  height: 57px;
+  padding: 0 25px;
+
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+
+  background: var(--hd-accent);
+  border-radius: 100px;
+}
+
+.btn-booking::before,
+.btn-booking::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+
+  background: var(--hd-title);
+}
+
+/* 1) giriş: dairə */
+.btn-booking::before {
+  left: 50%;
+  top: 100%;
+
+  width: 200%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0s;
+}
+
+.btn-booking:hover::before,
+.btn-booking:focus-visible::before {
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.5s ease;
+}
+
+/* 2) çıxış: qara fon yuxarı çəkilir */
+.btn-booking::after {
+  inset: 0;
+
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.btn-booking:hover::after,
+.btn-booking:focus-visible::after {
+  transform: scaleY(1);
+  transition: transform 0s linear 0.5s;
+}
+
+/* yazı: yuxarı çıxır → aşağıdan geri gəlir */
+.btn-booking-text {
+  display: block;
+}
+
+.btn-booking:hover .btn-booking-text,
+.btn-booking:focus-visible .btn-booking-text {
+  animation: btnTextSwap 0.6s ease forwards;
+}
+
+@keyframes btnTextSwap {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 0;
+    transform: translateY(-150%);
+  }
+
+  41% {
+    opacity: 0;
+    transform: translateY(150%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   BURGER (yalnız ≤1199px)
+========================================= */
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 5px;
+
+  width: 48px;
+  height: 48px;
+  margin-left: 14px;
+  padding: 0 13px;
+
+  background: var(--hd-accent);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  transition: background 0.3s ease;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+
+  background: #fff;
+  border-radius: 2px;
+
+  transition: width 0.3s ease;
+}
+
+.menu-toggle span:nth-child(2) {
+  width: 70%;
+}
+
+.menu-toggle:hover {
+  background: var(--hd-title);
+}
+
+.menu-toggle:hover span:nth-child(2) {
+  width: 100%;
+}
+
+/* =========================================
+   SEARCH POPUP
+========================================= */
+
+.search-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(20, 20, 20, 0.95);
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.4s ease,
+    visibility 0s linear 0.4s;
+}
+
+.search-popup.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease;
+}
+
+.search-popup-form {
+  position: relative;
+  width: min(700px, 100%);
+
+  transform: translateY(30px);
+  transition: transform 0.4s ease;
+}
+
+.search-popup.is-open .search-popup-form {
+  transform: translateY(0);
+}
+
+.search-popup-input {
+  width: 100%;
+  height: 70px;
+  padding: 0 80px 0 30px;
+
+  color: #fff;
+  font-family: inherit;
+  font-size: 18px;
+
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  outline: none;
+
+  transition: border-color 0.3s ease;
+}
+
+.search-popup-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-popup-input:focus {
+  border-color: var(--hd-accent);
+}
+
+.search-popup-submit {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+
+  color: #fff;
+  font-size: 20px;
+
+  background: var(--hd-accent);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.search-popup-close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 50px;
+  height: 50px;
+
+  color: #fff;
+  font-size: 24px;
+
+  background: var(--hd-accent);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  transition: transform 0.3s ease;
+}
+
+.search-popup-close:hover {
+  transform: rotate(90deg);
+}
+
+/* =========================================
+   MOBILE MENU (off-canvas, soldan)
+   Açılış:   1) tünd şəffaf fon soldan sağa yayılır
+             2) sonra panel soldan sürüşüb gəlir
+   Bağlanış: 1) panel çıxır  2) sonra fon geri yığılır
+   (hər state-in öz transition-delay-i var)
+========================================= */
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+
+  visibility: hidden;
+  transition: visibility 0s linear 0.8s;
+}
+
+.mobile-menu.is-open {
+  visibility: visible;
+  transition: none;
+}
+
+.mobile-menu-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(40, 40, 40, 0.3);
+
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s ease 0.3s;
+}
+
+.mobile-menu.is-open .mobile-menu-overlay {
+  transform: scaleX(1);
+  transition: transform 0.45s ease;
+}
+
+.mobile-menu-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  width: min(300px, 85vw);
+  padding: 30px 15px 40px 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  background: #353535;
+
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+}
+
+.mobile-menu.is-open .mobile-menu-panel {
+  transform: translateX(0);
+  transition: transform 0.4s ease 0.4s;
+}
+
+/* ---- head: loqo + bağla ---- */
+
+.mobile-menu-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 38px;
+}
+
+.mobile-menu-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #fff;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.mobile-menu-logo svg {
+  font-size: 38px;
+}
+
+.mobile-menu-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 28px;
+  height: 28px;
+  margin-right: 6px;
+  padding: 0;
+
+  color: #fff;
+  font-size: 22px;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.mobile-menu-close:hover {
+  color: var(--hd-accent);
+  transform: rotate(90deg);
+}
+
+/* ---- menyu ---- */
+
+.mobile-nav-item + .mobile-nav-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  min-height: 46px;
+}
+
+.mobile-nav-link {
+  flex: 1;
+  padding: 15px 0;
+
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  text-transform: uppercase;
+
+  transition: color 0.3s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-item.is-open > .mobile-nav-row > .mobile-nav-link {
+  color: var(--hd-accent);
+}
+
+/* yaşıl kvadrat ox düyməsi; açıq olanda ağ olur, ox aşağı dönür */
+.mobile-sub-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 30px;
+  height: 30px;
+  padding: 0;
+
+  color: #fff;
+  font-size: 16px;
+
+  background: var(--hd-accent);
+  border: none;
+  cursor: pointer;
+
+  transition:
+    color 0.3s ease,
+    background 0.3s ease;
+}
+
+.mobile-sub-toggle svg {
+  stroke-width: 3;
+  transition: transform 0.3s ease;
+}
+
+.mobile-nav-item.is-open > .mobile-nav-row > .mobile-sub-toggle {
+  color: var(--hd-title);
+  background: #fff;
+}
+
+.mobile-nav-item.is-open > .mobile-nav-row > .mobile-sub-toggle svg {
+  transform: rotate(90deg);
+}
+
+/* alt menyu hündürlük animasiyası: grid 0fr → 1fr */
+.mobile-sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.mobile-nav-item.is-open > .mobile-sub {
+  grid-template-rows: 1fr;
+}
+
+.mobile-sub > ul {
+  min-height: 0;
+  overflow: hidden;
+
+  visibility: hidden;
+  transition: visibility 0s linear 0.35s;
+}
+
+.mobile-nav-item.is-open > .mobile-sub > ul {
+  visibility: visible;
+  transition: none;
+}
+
+.mobile-sub li {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-sub a {
+  display: block;
+  padding: 15px 0 15px 16px;
+
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  text-transform: uppercase;
+
+  transition: color 0.3s ease;
+}
+
+.mobile-sub a:hover,
+.mobile-sub a.is-active,
+.mobile-sub .mobile-nav-item.is-open > .mobile-nav-row > a {
+  color: var(--hd-accent);
+}
+
+/* ikinci səviyyə (News Grid → No / Left / Right Sidebar) bir az içəridən başlayır */
+.mobile-sub .mobile-sub a {
+  padding-left: 32px;
+}
+
+/* ---- əlaqə (yaşıl dairəvi ikonlar) ---- */
+
+.mobile-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  margin-top: 20px;
+
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mobile-contact li {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.mobile-contact-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 30px;
+  height: 30px;
+
+  color: #fff;
+  font-size: 13px;
+
+  background: var(--hd-accent);
+  border-radius: 50%;
+}
+
+.mobile-contact a {
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.mobile-contact a:hover {
+  color: var(--hd-accent);
+}
+
+/* ---- sosial şəbəkələr ---- */
+
+.mobile-social {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-top: 27px;
+}
+
+.mobile-social a {
+  display: flex;
+
+  color: #fff;
+  font-size: 16px;
+
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.mobile-social a:hover {
+  color: var(--hd-accent);
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .header *,
+  .header *::before,
+  .header *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    animation: none !important;
+  }
+}
+
+/* =========================================
+   DESKTOP (≥1200px): hesab + səbət ikonları üçün yer
+   Menyu bəndlərinin arası və ikonlar bir az sıxılır ki,
+   menyu loqonun altına girməsin.
+========================================= */
+
+@media (min-width: 1200px) {
+  .main-nav-item {
+    padding: 0 14px;
+  }
+
+  .header-search-btn,
+  .header-icon-btn {
+    width: 36px;
+  }
+
+  .header-booking {
+    margin-left: 16px;
+  }
+}
+
+/* =========================================
+   LAPTOP / TABLET  (≤1199px) — burger menyu
+========================================= */
+
+@media (max-width: 1199px) {
+  .main-nav {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .header-bar {
+    padding-right: 16px;
+  }
+}
+
+@media (max-width: 991px) {
+  .header-top-hours {
+    display: none;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+  .header {
+    --hd-radius: 22px;
+  }
+
+  .header-top {
+    font-size: 14px;
+  }
+
+  .header-top-inner {
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .header-top-info .header-top-address {
+    display: none;
+  }
+
+  .header-main-inner {
+    min-height: 76px;
+  }
+
+  .header-logo {
+    flex-basis: 160px;
+    gap: 8px;
+    font-size: 25px;
+  }
+
+  .header-logo svg {
+    font-size: 28px;
+  }
+
+  .header-bar {
+    padding-left: calc(var(--hd-radius) + 10px);
+    padding-right: 12px;
+    border-top-right-radius: 18px;
+  }
+
+  .header-booking {
+    height: 48px;
+    min-width: 0;
+    padding: 0 22px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 575px) {
+  .header-booking {
+    display: none;
+  }
+
+  .header-logo {
+    flex-basis: 150px;
+  }
+
+  .menu-toggle {
+    width: 44px;
+    height: 44px;
+    margin-left: 8px;
+    padding: 0 12px;
+  }
+
+  .search-popup-close {
+    top: 20px;
+    right: 20px;
+  }
+
+  .search-popup-input {
+    height: 60px;
+    padding-left: 22px;
+    font-size: 16px;
+  }
+}
+
+/* çox dar telefonlar: hesab + səbət ikonları sığsın */
+@media (max-width: 400px) {
+  /* adminlərdə "Admin Panel" linki email-in altına keçə bilsin */
+  .header-top-inner {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .header-search-btn,
+  .header-icon-btn {
+    width: 32px;
+  }
+
+  .header-search-btn {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 374px) {
+  .header-search-btn {
+    display: none;
+  }
+}

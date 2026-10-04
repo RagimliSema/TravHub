@@ -1,0 +1,79 @@
+/* ================= Bölmə ================= */
+/* kartın öz stilləri: components/blogcard/blogcard.css */
+.blog-section {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+.blog-container {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ---------- Arxa fondakı bəzək ---------- */
+.blog-section__shape {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.blog-section__shape img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  /* demo-dakı movebounce3: 4s-də 15px yuxarı qalxıb enir */
+  animation: blogBounceY 4s linear infinite;
+}
+
+@keyframes blogBounceY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* ================= Kartlar ================= */
+/* kartlar bir sırada; sığmayanda yana sürüşür (components/snapdots/snapdots.css).
+   görünən kart sayı demo-dakı kimi: 3 / 2 / 1 */
+.blog-grid {
+  --per-view: 3;
+  --gap: 30px;
+
+  /* kartların "aşağıdan qalxma" animasiyası sıranın içində kəsilməsin */
+  padding-bottom: 20px;
+  margin-bottom: -20px;
+}
+
+@media (max-width: 991.98px) {
+  .blog-grid { --per-view: 2; }
+}
+
+@media (max-width: 767.98px) {
+  .blog-grid { --per-view: 1; }
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 991px) {
+  .blog-section { padding: 90px 0; }
+}
+
+@media (max-width: 767px) {
+  .blog-section { padding: 70px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-section__shape img { animation: none; }
+}

@@ -1,0 +1,47 @@
+# Render Blueprint – backend (Express API) və frontend (Vite static site) birlikdə.
+# Render → New → Blueprint → bu repo. "sync: false" dəyərləri Render özü soruşur
+# (gizli məlumat bu faylda saxlanmır). JWT_SECRET-i Render özü təsadüfi yaradır.
+services:
+  # ---------- Backend: https://<travhub-api>.onrender.com ----------
+  - type: web
+    name: travhub-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: JWT_SECRET
+        generateValue: true
+      # MongoDB Atlas bağlantı ünvanı (mongodb+srv://...)
+      - key: MONGO_URI
+        sync: false
+      # frontend-in Render ünvanı, məs. https://travhub.onrender.com
+      - key: CLIENT_URL
+        sync: false
+      # bu backend-in öz ünvanı, məs. https://travhub-api.onrender.com (OAuth üçün)
+      - key: SERVER_URL
+        sync: false
+
+  # ---------- Frontend: https://<travhub>.onrender.com ----------
+  - type: web
+    name: travhub
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    # React Router: /admin, /tour-details/... kimi bütün ünvanlar index.html-ə
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      # backend ünvanı + /api, məs. https://travhub-api.onrender.com/api
+      - key: VITE_API_URL
+        sync: false

@@ -1,0 +1,39 @@
+/* ================= Bölmə ================= */
+/* kartın öz stilləri: components/tourcard/tourcard.css */
+.tour-section {
+  padding: 100px 0;
+  background: #ffffff;
+  font-family: "Roboto", sans-serif;
+}
+
+.tour-container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ================= Grid ================= */
+/* kartlar bir sırada; sığmayanda yana sürüşür (components/snapdots/snapdots.css).
+   görünən kart sayı demo-dakı kimi: 3 / 2 / 1 */
+.tour-grid {
+  --per-view: 3;
+  --gap: 24px;
+}
+
+@media (max-width: 1199.98px) {
+  .tour-grid { --per-view: 2; }
+}
+
+@media (max-width: 767.98px) {
+  .tour-grid { --per-view: 1; }
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 991px) {
+  .tour-section { padding: 80px 0; }
+}
+
+@media (max-width: 575px) {
+  .tour-section { padding: 60px 0; }
+}

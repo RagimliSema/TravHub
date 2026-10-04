@@ -1,0 +1,70 @@
+/* kartın öz stilləri: components/destinationcard/destinationcard.css */
+.top-destinations {
+  padding: 110px 0 100px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.td-container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Başlıq (kiçik yazı + böyük başlıq + alt mətn) artıq SectionTitle-dadır */
+
+/* ---------- Kartlar ---------- */
+/* kartlar bir sırada; sığmayanda yana sürüşür (components/snapdots/snapdots.css).
+   görünən kart sayı demo-dakı kimi: 4 / 3 / 2 / 1 */
+.td-grid {
+  --per-view: 4;
+  --gap: 25px;
+
+  /* kartların "aşağıdan qalxma" animasiyası sıranın içində kəsilməsin */
+  padding-bottom: 40px;
+  margin-bottom: -40px;
+}
+
+@media (max-width: 1199.98px) {
+  .td-grid { --per-view: 3; }
+}
+
+@media (max-width: 991.98px) {
+  .td-grid { --per-view: 2; }
+}
+
+@media (max-width: 574.98px) {
+  .td-grid { --per-view: 1; }
+}
+
+/* ---------- Scroll animasiyası (kartlar) ---------- */
+.td-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.td-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 991px) {
+  .top-destinations {
+    padding: 80px 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .top-destinations {
+    padding: 60px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .td-reveal {
+    transition: none;
+  }
+}

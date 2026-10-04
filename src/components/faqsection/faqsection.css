@@ -1,0 +1,339 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@700&family=Roboto:wght@700&display=swap");
+
+/* ================= Bölmə ================= */
+.faq-section {
+  --faq-accent: #1bbc9b;
+  --faq-dark: #292929;
+  --faq-text: #555555;
+  --faq-bg: #f1f4fa;
+  --faq-border: #e5e3e0;
+
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+.faq-section__container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* açıq-boz kart; künclərdə yaşıl dairələr yavaşca böyüyüb-kiçilir */
+.faq-section__wrapper {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: 94px 45px 80px;
+  border-radius: 12px;
+  background: var(--faq-bg);
+}
+
+.faq-section__wrapper::before,
+.faq-section__wrapper::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: var(--faq-accent);
+  animation: faqZoom 2s ease infinite alternate;
+}
+
+.faq-section__wrapper::after {
+  top: -100px;
+  right: -100px;
+  width: 200px;
+  height: 200px;
+}
+
+.faq-section__wrapper::before {
+  bottom: -75px;
+  left: -75px;
+  width: 150px;
+  height: 150px;
+}
+
+@keyframes faqZoom {
+  0%,
+  100% { transform: scale(1); }
+  50% { transform: scale(0.9); }
+}
+
+/* demo: iki bərabər sütun, aralıq 30px, şəkil sütunu ortada */
+.faq-section__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+  align-items: center;
+}
+
+/* ================= Giriş animasiyaları ================= */
+.faq-section__content,
+.faq-media,
+.faq-media__circle {
+  opacity: 0;
+}
+
+.faq-section__content.is-inview {
+  animation: faqFadeInLeft 1s ease both;
+}
+
+.faq-media.is-inview {
+  animation: faqFadeInUp 1s ease 0.1s both;
+}
+
+.faq-media.is-inview .faq-media__circle--left {
+  animation: faqFadeInUp 1s ease 0.3s both;
+}
+
+.faq-media.is-inview .faq-media__circle--right {
+  animation: faqFadeInUp 1s ease 0.4s both;
+}
+
+@keyframes faqFadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes faqFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= Sual-cavab siyahısı ================= */
+/* başlıqla ilk sual arası ~46px, suallar arası 20px (demo-dakı yerləşmə ilə eyni) */
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 46px;
+}
+
+.faq-item__heading {
+  margin: 0;
+}
+
+.faq-item__title {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 21px 30px;
+  border: 2px solid var(--faq-border);
+  border-radius: 12px;
+  background: transparent;
+  font-family: "Geologica", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--faq-dark);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.5s;
+}
+
+.faq-item__title:focus-visible {
+  outline: 2px solid var(--faq-accent);
+  outline-offset: 3px;
+}
+
+.faq-item__question {
+  display: block;
+  padding-right: 20px;
+}
+
+/* "+" işarəsi: iki xətt; açıq sualda şaquli xətt itir və "−" qalır */
+.faq-item__icon {
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  width: 17px;
+  height: 17px;
+  transform: translateY(-50%);
+}
+
+.faq-item__icon::before,
+.faq-item__icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--faq-dark);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s;
+}
+
+.faq-item__icon::before {
+  width: 2px;
+  height: 16px;
+}
+
+.faq-item__icon::after {
+  width: 16px;
+  height: 2px;
+}
+
+.faq-item.is-active .faq-item__icon::before {
+  opacity: 0;
+}
+
+/* cavab: hündürlük 0 ↔ tam, jQuery slideUp/slideDown kimi 0.4s */
+.faq-item__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+.faq-item.is-active .faq-item__panel {
+  grid-template-rows: 1fr;
+}
+
+.faq-item__panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.faq-item__answer {
+  margin: 0;
+  padding: 26px 30px 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 33.5px;
+  color: var(--faq-text);
+}
+
+/* ================= Şəkillər ================= */
+.faq-media {
+  position: relative;
+  max-width: 525px;
+}
+
+.faq-media__main {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 185px;
+}
+
+/* kiçik dairəvi şəkillər: kartın rəngində qalın çərçivə + yanında yaşıl qövs */
+.faq-media__circle {
+  position: absolute;
+  z-index: 2;
+  border: 11px solid var(--faq-bg);
+  border-radius: 50%;
+}
+
+.faq-media__circle img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.faq-media__circle--left {
+  top: 41px;
+  left: 0;
+}
+
+.faq-media__circle--right {
+  right: 0;
+  bottom: 16px;
+}
+
+.faq-media__circle::after {
+  content: "";
+  position: absolute;
+  width: 76px;
+  height: 96px;
+  background: var(--faq-accent);
+}
+
+.faq-media__circle--left::after {
+  top: -9px;
+  left: -17px;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 89 117'><g transform='translate(0,117) scale(0.1,-0.1)'><path d='M758 1126 c-333 -145 -578 -409 -688 -740 -54 -165 -77 -360 -44 -373 34 -13 49 11 56 90 25 273 148 529 349 723 117 112 218 179 363 239 63 26 82 38 84 56 4 21 -12 39 -33 39 -5 0 -45 -15 -87 -34z m-714 -1048 c4 -17 2 -28 -4 -28 -5 0 -10 14 -10 32 0 36 4 35 14 -4z'/></g></svg>") center / cover no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 89 117'><g transform='translate(0,117) scale(0.1,-0.1)'><path d='M758 1126 c-333 -145 -578 -409 -688 -740 -54 -165 -77 -360 -44 -373 34 -13 49 11 56 90 25 273 148 529 349 723 117 112 218 179 363 239 63 26 82 38 84 56 4 21 -12 39 -33 39 -5 0 -45 -15 -87 -34z m-714 -1048 c4 -17 2 -28 -4 -28 -5 0 -10 14 -10 32 0 36 4 35 14 -4z'/></g></svg>") center / cover no-repeat;
+}
+
+.faq-media__circle--right::after {
+  right: -14px;
+  bottom: -11px;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 93 113'><g transform='translate(0,113) scale(0.1,-0.1)'><path d='M856 1108 c-3 -7 -10 -51 -16 -98 -32 -231 -152 -472 -320 -641 -123 -124 -238 -199 -415 -270 -78 -31 -90 -39 -90 -60 0 -21 4 -24 40 -23 86 1 306 118 443 235 231 196 406 530 415 793 2 71 2 71 -26 74 -16 2 -29 -2 -31 -10z'/></g></svg>") center / cover no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 93 113'><g transform='translate(0,113) scale(0.1,-0.1)'><path d='M856 1108 c-3 -7 -10 -51 -16 -98 -32 -231 -152 -472 -320 -641 -123 -124 -238 -199 -415 -270 -78 -31 -90 -39 -90 -60 0 -21 4 -24 40 -23 86 1 306 118 443 235 231 196 406 530 415 793 2 71 2 71 -26 74 -16 2 -29 -2 -31 -10z'/></g></svg>") center / cover no-repeat;
+}
+
+/* yuxarıdakı kiçik fiqur sağa-sola yırğalanır */
+.faq-media__shape {
+  position: absolute;
+  top: -80px;
+  right: 80px;
+  animation: faqShapeMove 4s linear infinite;
+}
+
+@keyframes faqShapeMove {
+  0%,
+  100% { transform: translateX(0); }
+  50% { transform: translateX(-15px); }
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1300px) {
+  .faq-section__wrapper { padding: 94px 40px 80px; }
+  .faq-item__answer br { display: none; }
+}
+
+@media (max-width: 991px) {
+  .faq-section__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .faq-media { margin: 0 auto; }
+  .faq-media__shape { display: none; }
+}
+
+@media (max-width: 767px) {
+  .faq-section { padding: 80px 0; }
+  .faq-section__wrapper { padding: 94px 20px 80px; }
+  .faq-media__circle { display: none; }
+  .faq-item__title { padding: 18px 20px; font-size: 18px; }
+  .faq-item__icon { right: 16px; }
+  .faq-item__answer { padding: 20px 20px 0; font-size: 16px; line-height: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-section__content,
+  .faq-media,
+  .faq-media__circle {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .faq-section__wrapper::before,
+  .faq-section__wrapper::after,
+  .faq-media__shape {
+    animation: none;
+  }
+
+  .faq-item__panel,
+  .faq-item__title,
+  .faq-item__icon::before,
+  .faq-item__icon::after {
+    transition: none;
+  }
+}

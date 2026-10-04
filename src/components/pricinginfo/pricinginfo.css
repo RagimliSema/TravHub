@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@500&family=Roboto:wght@400&display=swap");
+
+/* ================= Bölmə ================= */
+.pricing-info {
+  --info-accent: #1bbc9b;
+
+  padding: 0 0 120px;
+  background: #ffffff;
+}
+
+.pricing-info__container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* bu bölmədə başlıq ilə kartlar arası demo-da 48px-dir (digər bölmələrdə 60px) */
+.pricing-info .section-title {
+  margin-bottom: 48px;
+}
+
+/* demo: 4 / 2 / 1 sütun, aralıq 24px */
+.pricing-info__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* giriş: 20px aşağıdan (gecikmə JSX-də: 0.1 / 0.2 / 0.3 / 0.4s) */
+.pricing-info__col {
+  opacity: 0;
+}
+
+.pricing-info__col.is-inview {
+  animation: pricingInfoFadeInUp 1s ease both;
+}
+
+@keyframes pricingInfoFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= Kart ================= */
+.pricing-info__item {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 60px 30px;
+  border: 1px solid #e5e3e0;
+  border-radius: 15px;
+  transition: border-color 0.5s;
+}
+
+.pricing-info__item:hover {
+  border-color: var(--info-accent);
+}
+
+.pricing-info__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 0 24px;
+  border-radius: 50%;
+  background: var(--info-accent);
+  font-size: 22px;
+  color: #ffffff;
+}
+
+/* ikon sağa qısa titrəyir */
+.pricing-info__item:hover .pricing-info__icon {
+  animation: pricingIconShake 0.3s ease-in-out;
+}
+
+@keyframes pricingIconShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25%,
+  75% {
+    transform: translateX(5px);
+  }
+
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+.pricing-info__title {
+  margin: 0 0 15px;
+  font-family: "Geologica", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: normal;
+  color: #292929;
+}
+
+.pricing-info__text {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 28px;
+  color: #8c8284;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .pricing-info__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .pricing-info { padding-bottom: 90px; }
+  .pricing-info__grid {
+    grid-template-columns: minmax(0, 400px);
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-info__col {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .pricing-info__item { transition: none; }
+  .pricing-info__item:hover .pricing-info__icon { animation: none; }
+}

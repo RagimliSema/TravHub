@@ -1,0 +1,967 @@
+@import url("https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Kumbh+Sans:wght@500;600;700;800&family=Roboto:wght@400;500;700&display=swap");
+
+/* =========================================================
+   WHY CHOOSE US
+========================================================= */
+.wcu {
+  --wcu-green: #28ce9b;
+  --wcu-green-dark: #1fb688;
+  --wcu-dark: #282828;
+  --wcu-bg: #efefef;
+  --wcu-mint: #e1fff6;
+  --wcu-text: #555555;
+  --wcu-muted: #666666;
+  --wcu-light: #8a8a8a;
+  --wcu-dim: #c6c6c6;
+
+  --wcu-heading: "Kumbh Sans", sans-serif;
+  --wcu-body: "Roboto", sans-serif;
+  --wcu-script: "Kalam", cursive;
+
+  --wcu-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --wcu-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  position: relative;
+  overflow: hidden;
+  padding: 130px 0 120px;
+  /* arxa fon şəkli JSX-dən --wcu-bg-img dəyişəni ilə gəlir */
+  background-color: var(--wcu-bg);
+  background-image: var(--wcu-bg-img, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  font-family: var(--wcu-body);
+  color: var(--wcu-text);
+}
+
+.wcu *,
+.wcu *::before,
+.wcu *::after {
+  box-sizing: border-box;
+}
+
+.wcu :where(img) {
+  display: block;
+  max-width: 100%;
+}
+
+.wcu :where(ul) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wcu :where(h2, h3, p) {
+  margin: 0;
+}
+
+.wcu :where(a) {
+  text-decoration: none;
+}
+
+.wcu a:focus-visible {
+  outline: 3px solid var(--wcu-green);
+  outline-offset: 4px;
+}
+
+/* ---------- Grid ---------- */
+.wcu__container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* =========================================================
+   SOL TƏRƏF — ŞƏKİLLƏR
+   (ölçülər 570px genişlikli dizayna görə faizlə verilib)
+========================================================= */
+.wcu__media {
+  --mx: 0;
+  --my: 0;
+  position: relative;
+  width: 100%;
+  max-width: 570px;
+  padding-top: 25px;
+}
+
+/* Arxadakı qırıq xətli çərçivə */
+.wcu__frame {
+  position: absolute;
+  top: 0;
+  left: 19.65%;
+  z-index: 0;
+  width: 62.1%;
+  height: 85%;
+  /* alt küncü ox dairəsinin arxasında gizlənir */
+  overflow: visible;
+  pointer-events: none;
+}
+
+.wcu__frame rect {
+  fill: none;
+  stroke: url(#wcuFrameGrad);
+  stroke-width: 1.2;
+  stroke-dasharray: 6 5;
+  animation: wcuAnts 16s linear infinite;
+}
+
+/* Böyük şəkil */
+.wcu__main {
+  position: relative;
+  z-index: 1;
+  width: 76.85%;
+  aspect-ratio: 438 / 543;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.wcu__main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.4s var(--wcu-ease), scale 1.8s var(--wcu-ease),
+    clip-path 1.4s var(--wcu-ease);
+}
+
+/* parıltı xətti */
+.wcu__main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.35) 50%,
+      transparent 65%);
+  transform: translateX(-130%);
+  transition: transform 1.1s var(--wcu-ease);
+  pointer-events: none;
+}
+
+.wcu__main:hover img {
+  transform: scale(1.07);
+}
+
+.wcu__main:hover::after {
+  transform: translateX(130%);
+}
+
+/* Oval şəkil */
+.wcu__oval-wrap {
+  position: absolute;
+  top: 16.2%;
+  left: 67.37%;
+  z-index: 2;
+  width: 25.96%;
+}
+
+.wcu__oval-parallax {
+  translate: calc(var(--mx) * 26px) calc(var(--my) * 26px);
+  transition: translate 0.7s var(--wcu-ease);
+}
+
+.wcu__oval {
+  aspect-ratio: 148 / 209;
+  overflow: hidden;
+  border: 4px solid #f7f7f7;
+  border-radius: 45%;
+  background: #cfd9e0;
+  animation: wcuFloat 5s ease-in-out infinite;
+}
+
+.wcu__oval img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1s var(--wcu-ease);
+}
+
+.wcu__oval:hover img {
+  transform: scale(1.14) rotate(2deg);
+}
+
+/* Ox düyməsi (fon rəngində “kəsik” dairə + yaşıl dairə) */
+.wcu__arrow-wrap {
+  position: absolute;
+  top: 72.9%;
+  left: 56.32%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 28.07%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--wcu-bg);
+}
+
+.wcu__arrow {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 71.25%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--wcu-green);
+  color: #fff;
+  translate: calc(var(--mx) * -14px) calc(var(--my) * -14px);
+  transition: translate 0.7s var(--wcu-ease), transform 0.5s var(--wcu-bounce),
+    background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ətrafa yayılan dalğa */
+.wcu__arrow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--wcu-green);
+  border-radius: 50%;
+  animation: wcuPing 2.6s ease-out infinite;
+  pointer-events: none;
+}
+
+/* fırlanan qırıq xətli halqa */
+.wcu__arrow-ring {
+  position: absolute;
+  inset: 7%;
+  border: 1.5px dashed rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  animation: wcuSpin 16s linear infinite;
+}
+
+.wcu__arrow-icon {
+  display: grid;
+  width: 36%;
+  transition: transform 0.55s var(--wcu-bounce);
+}
+
+.wcu__arrow-icon svg {
+  width: 100%;
+  height: auto;
+}
+
+.wcu__arrow:hover {
+  background: var(--wcu-dark);
+  transform: scale(1.06);
+  box-shadow: 0 18px 30px -14px rgba(0, 0, 0, 0.5);
+}
+
+.wcu__arrow:hover::before {
+  border-color: var(--wcu-dark);
+}
+
+.wcu__arrow:hover .wcu__arrow-icon {
+  transform: rotate(45deg);
+}
+
+.wcu__arrow:hover .wcu__arrow-ring {
+  border-color: var(--wcu-green);
+  animation-duration: 4s;
+}
+
+/* “Trusted by” kartı */
+.wcu__trusted-wrap {
+  position: absolute;
+  top: 59.7%;
+  /* ekranın solundan çıxmasın deyə */
+  left: max(-91px, min(-15px, calc((1170px - 100vw) / 2)));
+  z-index: 4;
+}
+
+.wcu__trusted {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-width: 236px;
+  padding: 17px 30px 17px 11px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 20px 45px -28px rgba(0, 0, 0, 0.35);
+  transition: translate 0.5s var(--wcu-ease), box-shadow 0.5s var(--wcu-ease);
+}
+
+.wcu__trusted-check {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--wcu-green);
+  color: #fff;
+  transition: transform 0.8s var(--wcu-ease);
+}
+
+.wcu__trusted-check svg {
+  width: 20px;
+  height: 20px;
+}
+
+.wcu__trusted-check::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--wcu-green);
+  border-radius: 50%;
+  animation: wcuPing 2.2s ease-out infinite;
+}
+
+.wcu__trusted-text strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--wcu-dark);
+}
+
+.wcu__trusted-text span {
+  display: block;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--wcu-muted);
+}
+
+.wcu__trusted:hover {
+  translate: 8px 0;
+  box-shadow: 0 26px 50px -24px rgba(0, 0, 0, 0.4);
+}
+
+.wcu__trusted:hover .wcu__trusted-check {
+  transform: rotate(360deg);
+}
+
+/* =========================================================
+   SAĞ TƏRƏF — MƏTN
+========================================================= */
+.wcu__content {
+  position: relative;
+  padding-left: 0;
+}
+
+.wcu__subtitle {
+  position: relative;
+  display: inline-block;
+  font-family: var(--wcu-script);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--wcu-green);
+}
+
+.wcu__sparkle {
+  position: absolute;
+  top: -16px;
+  right: -26px;
+  width: 26px;
+  height: 26px;
+  color: var(--wcu-green);
+  overflow: visible;
+}
+
+.wcu__sparkle path {
+  transform-origin: 11px 15px;
+  animation: wcuSpark 2.4s ease-in-out infinite;
+}
+
+.wcu__sparkle .wcu__sparkle-b {
+  animation-delay: 0.2s;
+}
+
+.wcu__sparkle .wcu__sparkle-c {
+  animation-delay: 0.4s;
+}
+
+.wcu__title {
+  margin: 4px 0 16px;
+  padding-bottom: 0.08em;
+  font-family: var(--wcu-heading);
+  font-size: 50px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--wcu-dark);
+}
+
+.wcu__text {
+  max-width: 460px;
+  font-size: 20px;
+  line-height: 30px;
+}
+
+/* scroll ilə “yanan” sözlər */
+.wcu__word {
+  color: var(--wcu-dim);
+  transition: color 0.45s ease;
+}
+
+.wcu__word.is-lit {
+  color: var(--wcu-text);
+}
+
+/* ---------- Xüsusiyyətlər ---------- */
+.wcu__features {
+  display: grid;
+  gap: 28px;
+  margin-top: 55px;
+}
+
+.wcu__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 36px;
+}
+
+.wcu__feature-icon {
+  position: relative;
+  flex: none;
+  width: 64px;
+  height: 64px;
+}
+
+/* qırıq xətli kölgə-kvadrat */
+.wcu__feature-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px dashed var(--wcu-green);
+  border-radius: 10px;
+  transform: translate(4px, -4px);
+  transition: transform 0.5s var(--wcu-ease);
+}
+
+.wcu__feature-box {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background: var(--wcu-green);
+  color: #fff;
+  transition: transform 0.5s var(--wcu-ease), box-shadow 0.5s var(--wcu-ease);
+}
+
+.wcu__feature-box svg {
+  width: 32px;
+  height: 32px;
+}
+
+.wcu__feature-body h3 {
+  margin-bottom: 12px;
+  font-family: var(--wcu-heading);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--wcu-dark);
+  transition: color 0.35s ease;
+}
+
+.wcu__feature-body p {
+  max-width: 250px;
+  font-size: 16px;
+  line-height: 28px;
+  color: var(--wcu-muted);
+}
+
+.wcu__feature:hover .wcu__feature-box {
+  transform: translate(4px, -4px);
+  box-shadow: 0 14px 26px -12px rgba(40, 206, 155, 0.75);
+}
+
+.wcu__feature:hover .wcu__feature-icon::before {
+  transform: translate(-3px, 3px);
+}
+
+.wcu__feature:hover .wcu__feature-box svg {
+  animation: wcuFlip 0.8s var(--wcu-ease);
+}
+
+.wcu__feature:hover h3 {
+  color: var(--wcu-green);
+}
+
+/* ---------- Düymə + səyyahlar ---------- */
+.wcu__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  margin-top: 50px;
+}
+
+.wcu__btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 58px;
+  padding: 0 25px;
+  overflow: hidden;
+  border-radius: 30px;
+  background: var(--wcu-green);
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  transition: transform 0.35s var(--wcu-ease), box-shadow 0.35s var(--wcu-ease);
+}
+
+/* hover-də soldan gələn tünd fon */
+.wcu__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--wcu-dark);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.55s var(--wcu-ease);
+}
+
+.wcu__btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 28px -14px rgba(40, 40, 40, 0.6);
+}
+
+.wcu__btn:hover::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.wcu__btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.wcu__travellers {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wcu__avatars {
+  display: flex;
+  align-items: center;
+}
+
+.wcu__avatar {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin-left: -30px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #ddd;
+  transition: translate 0.45s var(--wcu-bounce), scale 0.45s var(--wcu-bounce),
+    box-shadow 0.45s ease, filter 0.35s ease;
+}
+
+.wcu__avatar:first-child {
+  margin-left: 0;
+}
+
+.wcu__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* avatarlar bir-bir “pop” olur */
+.wcu__cta.is-in .wcu__avatar {
+  animation: wcuPop 0.6s var(--wcu-bounce) both;
+  animation-delay: calc(0.45s + var(--i) * 0.12s);
+}
+
+.wcu__avatars:hover .wcu__avatar:not(:hover):not(.wcu__avatar--plus) {
+  filter: grayscale(0.5) brightness(0.95);
+}
+
+.wcu__avatar:hover {
+  z-index: 5;
+  translate: 0 -8px;
+  scale: 1.1;
+  box-shadow: 0 14px 24px -12px rgba(0, 0, 0, 0.45);
+}
+
+/* ad tooltip-i */
+.wcu__avatar[data-name]::before,
+.wcu__avatar[data-name]::after {
+  position: absolute;
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  translate: -50% 6px;
+  transition: opacity 0.3s ease, translate 0.35s var(--wcu-ease);
+}
+
+.wcu__avatar[data-name]::after {
+  content: attr(data-name);
+  bottom: calc(100% + 12px);
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--wcu-dark);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.wcu__avatar[data-name]::before {
+  content: "";
+  bottom: calc(100% + 6px);
+  border: 6px solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--wcu-dark);
+}
+
+.wcu__avatar[data-name]:hover::before,
+.wcu__avatar[data-name]:hover::after {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.wcu__avatar--plus a {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--wcu-mint);
+  color: var(--wcu-green);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.wcu__avatar--plus svg {
+  width: 26px;
+  height: 26px;
+  transition: transform 0.5s var(--wcu-bounce);
+}
+
+.wcu__avatar--plus:hover a {
+  background: var(--wcu-green);
+  color: #fff;
+}
+
+.wcu__avatar--plus:hover svg {
+  transform: rotate(90deg);
+}
+
+.wcu__stat strong {
+  display: block;
+  font-family: var(--wcu-heading);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--wcu-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.wcu__stat span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--wcu-heading);
+  font-size: 17px;
+  color: var(--wcu-light);
+}
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
+.wcu [data-reveal] {
+  opacity: 0;
+  transition: opacity 0.9s var(--wcu-ease) var(--d, 0s),
+    transform 1s var(--wcu-ease) var(--d, 0s);
+}
+
+.wcu [data-reveal="up"] {
+  transform: translateY(40px);
+}
+
+.wcu [data-reveal="left"] {
+  transform: translateX(-70px);
+}
+
+.wcu [data-reveal="zoom"] {
+  transform: scale(0.5);
+  transition-timing-function: var(--wcu-bounce);
+}
+
+.wcu [data-reveal="wipe"] {
+  opacity: 1;
+}
+
+/* clip-path şəklin özünə verilir (IntersectionObserver kəsilmiş elementi görmür) */
+.wcu [data-reveal="wipe"]>img {
+  clip-path: inset(0 100% 0 0);
+  scale: 1.25;
+}
+
+.wcu [data-reveal="mask"] {
+  opacity: 1;
+  overflow: hidden;
+}
+
+.wcu [data-reveal="mask"]>span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 1s var(--wcu-ease) var(--d, 0s);
+}
+
+.wcu [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.wcu [data-reveal="wipe"].is-in>img {
+  clip-path: inset(0 0 0 0);
+  scale: 1;
+}
+
+.wcu [data-reveal="mask"].is-in>span {
+  transform: none;
+}
+
+/* =========================================================
+   KEYFRAMES
+========================================================= */
+@keyframes wcuFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes wcuSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wcuPing {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes wcuAnts {
+  to {
+    stroke-dashoffset: -330;
+  }
+}
+
+@keyframes wcuSpark {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(0.75);
+    opacity: 0.6;
+  }
+}
+
+@keyframes wcuFlip {
+  from {
+    transform: rotateY(0);
+  }
+
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes wcuPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1199px) {
+  .wcu__title {
+    font-size: 44px;
+  }
+
+  .wcu__feature {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 991px) {
+  .wcu {
+    padding: 100px 0 90px;
+  }
+
+  .wcu__container {
+    grid-template-columns: 1fr;
+    gap: 70px;
+  }
+
+  .wcu__media,
+  .wcu__content {
+    width: 100%;
+    max-width: 570px;
+    margin: 0 auto;
+  }
+
+  .wcu__trusted-wrap {
+    left: -12px;
+  }
+
+  /* dar ekranda fonun sağ tərəfi (palma) görünsün */
+  .wcu {
+    background-position: right center;
+  }
+
+  .wcu__text,
+  .wcu__feature-body p {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 575px) {
+  .wcu {
+    padding: 80px 0 70px;
+  }
+
+  .wcu__container {
+    gap: 56px;
+  }
+
+  .wcu__trusted-wrap {
+    left: -15px;
+  }
+
+  .wcu__trusted {
+    min-width: 0;
+    gap: 12px;
+    padding: 10px 18px 10px 10px;
+    border-radius: 0 12px 12px 0;
+  }
+
+  .wcu__trusted-check {
+    width: 36px;
+    height: 36px;
+  }
+
+  .wcu__trusted-check svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .wcu__trusted-text strong {
+    font-size: 15px;
+  }
+
+  .wcu__trusted-text span {
+    font-size: 13px;
+  }
+
+  .wcu__subtitle {
+    font-size: 22px;
+  }
+
+  .wcu__title {
+    font-size: 34px;
+  }
+
+  .wcu__text {
+    font-size: 17px;
+    line-height: 28px;
+  }
+
+  .wcu__features {
+    margin-top: 40px;
+  }
+
+  .wcu__feature {
+    gap: 20px;
+  }
+
+  .wcu__feature-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .wcu__feature-body h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .wcu__cta {
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .wcu__btn {
+    height: 52px;
+    font-size: 16px;
+  }
+
+  .wcu__avatar {
+    width: 54px;
+    height: 54px;
+    margin-left: -24px;
+  }
+
+  .wcu__stat strong {
+    font-size: 22px;
+  }
+
+  .wcu__stat span {
+    font-size: 15px;
+  }
+}
+
+/* Hərəkəti azaltmaq istəyən istifadəçilər üçün */
+@media (prefers-reduced-motion: reduce) {
+
+  .wcu *,
+  .wcu *::before,
+  .wcu *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .wcu [data-reveal],
+  .wcu [data-reveal]>span,
+  .wcu [data-reveal]>img {
+    opacity: 1 !important;
+    transform: none !important;
+    scale: 1 !important;
+    clip-path: none !important;
+  }
+}

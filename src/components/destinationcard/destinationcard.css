@@ -1,0 +1,203 @@
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;800&family=Roboto:wght@700&display=swap");
+
+/* ================= Destinasiya kartı ================= */
+.td-card {
+  --td-green: #28ce9b;
+  --td-dark: #282828;
+
+  position: relative;
+  display: block;
+  aspect-ratio: 274 / 334;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.td-card__img {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.td-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s ease;
+}
+
+.td-card__img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.15) 45%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  z-index: 1;
+}
+
+.td-card__img::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.td-card:hover .td-card__img::before {
+  animation: td-shine 0.9s ease;
+}
+
+.td-card:hover .td-card__img img {
+  transform: scale(1.06);
+}
+
+@keyframes td-shine {
+  from {
+    left: -80%;
+  }
+  to {
+    left: 130%;
+  }
+}
+
+.td-card__btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% 0 50% 50%;
+  background: var(--td-green);
+  color: #ffffff;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.4s ease, transform 0.4s ease,
+    background-color 0.4s ease, border-radius 0.4s ease;
+}
+
+.td-card__arrow {
+  display: flex;
+}
+
+.td-card__btn:hover {
+  background: var(--td-dark);
+  border-radius: 0 50% 50% 50%;
+}
+
+.td-card__btn:hover .td-card__arrow {
+  animation: td-arrow-fly 0.5s ease forwards;
+}
+
+@keyframes td-arrow-fly {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  45% {
+    transform: translate(26px, -26px);
+    opacity: 0;
+  }
+  46% {
+    transform: translate(-26px, 26px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+.td-card__btn svg {
+  transition: transform 0.4s ease 0.1s;
+}
+
+.td-card:hover .td-card__btn,
+.td-card:focus-visible .td-card__btn {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.td-card:hover .td-card__btn svg {
+  transform: rotate(-45deg);
+}
+
+.td-card:focus-visible {
+  outline: 3px solid var(--td-green);
+  outline-offset: 3px;
+}
+
+.td-card__content {
+  position: absolute;
+  left: 30px;
+  right: 20px;
+  bottom: 32px;
+  z-index: 3;
+}
+
+.td-card__title {
+  margin: 0 0 14px;
+  font-family: "Red Hat Display", sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.td-card__badge {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 30px;
+  background: var(--td-green);
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 575px) {
+  .td-card__btn {
+    opacity: 1;
+    transform: translateX(0);
+    width: 60px;
+    height: 60px;
+  }
+
+  .td-card__btn svg {
+    transform: rotate(-45deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .td-card__img img,
+  .td-card__btn,
+  .td-card__btn svg {
+    transition: none;
+  }
+
+  .td-card:hover .td-card__img::before {
+    animation: none;
+  }
+}

@@ -1,0 +1,42 @@
+import mongoose from "mongoose";
+
+/*
+  Səbət modeli: hər istifadəçinin bir səbəti var (user unique).
+  Qiymət burada saxlanmır – səbət göstəriləndə məhsulun hazırkı qiyməti götürülür.
+*/
+const cartItemSchema = new mongoose.Schema(
+  {
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: [1, "Quantity must be at least 1"],
+      validate: {
+        validator: Number.isInteger,
+        message: "Quantity must be a whole number",
+      },
+    },
+  },
+  { _id: false }
+);
+
+const cartSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true,
+    },
+    items: [cartItemSchema],
+  },
+  { timestamps: true }
+);
+
+const Cart = mongoose.model("Cart", cartSchema);
+
+export default Cart;

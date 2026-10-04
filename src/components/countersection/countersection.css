@@ -1,0 +1,217 @@
+/* ================= Bölmə ================= */
+.counter-section {
+  --counter-bg: #051a13;
+  --counter-accent: #28ce9c;
+  --counter-line: rgba(255, 255, 255, 0.08);
+  --counter-label: #bccbc6;
+
+  padding: 90px 0 120px;
+  background: var(--counter-bg);
+  overflow: hidden;
+}
+
+.counter-container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  display: grid;
+  grid-template-columns: 542fr 569fr;
+  align-items: end;
+  gap: 59px;
+
+  /* ekrana girəndə bütün məzmun yavaşca görünür (videodakı kimi, ~1 saniyə) */
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.counter-container.is-inview {
+  opacity: 1;
+}
+
+/* ================= Şəkil kollajı ================= */
+/* 542x542 kvadrat; ölçülər faizlə – kiçik ekranda birlikdə kiçilir */
+.counter-collage {
+  position: relative;
+  width: 100%;
+  max-width: 542px;
+  aspect-ratio: 1;
+}
+
+.counter-collage__img {
+  position: absolute;
+  display: block;
+  object-fit: cover;
+  border-radius: 999px; /* kapsul / oval forma */
+  box-sizing: border-box;
+}
+
+/* böyük oval */
+.counter-collage__img--big {
+  left: 0;
+  top: 6.3%;
+  width: 64.2%;
+  height: 83.8%;
+  border: 5px solid #ffffff;
+}
+
+/* yuxarıdakı dəyirmi şəkil – kənarı fon rəngində, ovaldan ayrılsın deyə */
+.counter-collage__img--circle {
+  z-index: 1;
+  left: 34.3%;
+  top: 0;
+  width: 32.7%;
+  aspect-ratio: 1;
+  border: 5px solid var(--counter-bg);
+  border-radius: 50%;
+}
+
+/* sağdakı iki kapsul */
+.counter-collage__img--top,
+.counter-collage__img--bottom {
+  left: 68.6%;
+  width: 31.4%;
+  height: 44.5%;
+  border: 4px solid #ffffff;
+}
+
+.counter-collage__img--top    { top: 6.5%; }
+.counter-collage__img--bottom { top: 55.4%; }
+
+/* ================= Rəqəmlər kartı ================= */
+.counter-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 79px;
+  padding: 22px 0 28px;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 40px;
+}
+
+/* xətlər <span>-dır, stat-lar <div> – nth-of-type yalnız div-ləri sayır */
+.counter-stat:nth-of-type(odd)  { padding-left: 30px; }  /* sol sütun */
+.counter-stat:nth-of-type(even) { padding-left: 49px; }  /* sağ sütun */
+
+.counter-number {
+  display: block;
+  font-family: "Outfit", sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #ffffff;
+}
+
+.counter-number small {
+  margin-left: 3px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.counter-stat__label {
+  max-width: 190px;
+  margin: 16px 0 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 32px;
+  color: var(--counter-label);
+}
+
+/* ---------- Kartın ortasındakı nazik xətlər (dairəyə qədər kəsilir) ---------- */
+.counter-card__line {
+  position: absolute;
+  background: var(--counter-line);
+}
+
+.counter-card__line--top,
+.counter-card__line--bottom {
+  left: 50%;
+  width: 1px;
+  height: 13%;
+}
+
+.counter-card__line--top    { top: 14.4%; }
+.counter-card__line--bottom { bottom: 14.1%; }
+
+.counter-card__line--left,
+.counter-card__line--right {
+  top: 50%;
+  width: 22.1%;
+  height: 1px;
+}
+
+.counter-card__line--left  { left: 10.7%; }
+.counter-card__line--right { right: 10.5%; }
+
+/* ---------- Ortadakı reytinq dairəsi ---------- */
+.counter-rating {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 114px;
+  height: 114px;
+  border-radius: 50%;
+  background: var(--counter-accent);
+  transform: translate(-50%, -50%);
+}
+
+/* içindəki qırıq xətli halqa */
+.counter-rating::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1.5px dashed rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+}
+
+.counter-rating .counter-number {
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1199px) {
+  .counter-number { font-size: 52px; }
+  .counter-number small { font-size: 26px; }
+  .counter-stat__label { font-size: 16px; line-height: 28px; }
+}
+
+/* planşet və telefon: kollaj üstdə, kart altda */
+@media (max-width: 991px) {
+  .counter-section { padding: 80px 0; }
+
+  .counter-container {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 50px;
+  }
+
+  .counter-card {
+    width: 100%;
+    max-width: 569px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 575px) {
+  .counter-section { padding: 60px 0; }
+  .counter-card { row-gap: 60px; padding: 20px 0 24px; border-radius: 28px; }
+  .counter-stat:nth-of-type(odd)  { padding-left: 18px; }
+  .counter-stat:nth-of-type(even) { padding-left: 34px; }
+  .counter-number { font-size: 38px; }
+  .counter-number small { font-size: 20px; }
+  .counter-stat__label { max-width: 130px; font-size: 14px; line-height: 22px; margin-top: 10px; }
+  .counter-rating { width: 76px; height: 76px; }
+  .counter-rating::before { inset: 5px; }
+  .counter-rating .counter-number { font-size: 28px; }
+  .counter-card__line--left,
+  .counter-card__line--right { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .counter-container { transition: none; }
+}

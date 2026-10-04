@@ -1,0 +1,28 @@
+/* ================= Tour Carousel səhifəsi ================= */
+/* sürüşmə və nöqtələr: components/snapdots/snapdots.css */
+.tour-carousel {
+  padding: 120px 0;
+  background: #ffffff;
+}
+
+.tour-carousel__container {
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* demo: 3 / 2 / 1 kart görünür, aralıq 24px */
+.tour-carousel__row {
+  --per-view: 3;
+  --gap: 24px;
+}
+
+@media (max-width: 1199.98px) {
+  .tour-carousel__row { --per-view: 2; }
+}
+
+@media (max-width: 767.98px) {
+  .tour-carousel { padding: 80px 0; }
+  .tour-carousel__row { --per-view: 1; }
+}

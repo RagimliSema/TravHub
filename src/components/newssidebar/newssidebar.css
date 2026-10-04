@@ -1,0 +1,25 @@
+/* ================= News: məzmun + sidebar ================= */
+/* qutuların öz stilləri: components/sidebarwidgets/sidebarwidgets.css */
+.news-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 770fr) minmax(0, 370fr);
+  gap: 30px;
+  align-items: start;
+}
+
+/* sidebar solda: sidebar birinci gəlir (kiçik ekranda da yuxarıda olur – demo-dakı kimi) */
+.news-layout--left {
+  grid-template-columns: minmax(0, 370fr) minmax(0, 770fr);
+}
+
+.news-layout--left .news-sidebar {
+  order: -1;
+}
+
+@media (max-width: 991px) {
+  .news-layout,
+  .news-layout--left {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 60px;
+  }
+}
