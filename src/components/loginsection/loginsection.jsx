@@ -13,7 +13,6 @@ import loginMan from "../../assets/image/login-man.png";
 import cloudBig from "../../assets/image/cloud-3-1.png";
 import cloudSmall from "../../assets/image/login-cloud.png";
 import googleIcon from "../../assets/image/google.png";
-import facebookIcon from "../../assets/image/facebook.png";
 import shapeOne from "../../assets/image/login-shape-1.png";
 import shapeTwo from "../../assets/image/login-shape-2.png";
 
@@ -83,10 +82,6 @@ function AuthForm({ mode }) {
         <button type="button" className="login-form__social" onClick={() => handleSocial("google", "Google")}>
           <img src={googleIcon} alt="" />
           Sign Up with Google
-        </button>
-        <button type="button" className="login-form__social" onClick={() => handleSocial("facebook", "Facebook")}>
-          <img src={facebookIcon} alt="" />
-          Sign Up with Facebook
         </button>
       </div>
 
