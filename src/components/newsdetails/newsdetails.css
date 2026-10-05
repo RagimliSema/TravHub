@@ -291,13 +291,16 @@
   opacity: 0.6;
 }
 
+/* "Delete" – qırmızı, aydın görünsün */
 .comments__delete {
   margin-top: 8px;
+  color: #c0392b;
 }
 
 .comments__delete:hover,
 .comments__delete:focus-visible {
-  color: #c0392b;
+  color: #962d22;
+  text-decoration: underline;
 }
 
 .comments__reply-form {
