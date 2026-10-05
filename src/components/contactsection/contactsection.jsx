@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { FaLocationDot, FaPhone, FaPaperPlane, FaHeadset } from "react-icons/fa6";
 import SectionTitle from "../sectiontitle/sectiontitle";
+import { useAuth } from "../../context/AuthContext";
 import { useInView } from "../../hooks/useInView";
+import { contactApi } from "../../services/api";
 import "../travhubbtn/travhubbtn.css";
 import "./contactsection.css";
 
@@ -61,10 +64,39 @@ function ContactInfo() {
   );
 }
 
-/* ---------- 2. Şəkil + "Get In Touch" forması (yalnız frontend) ---------- */
+// null – istifadəçi xanaya hələ toxunmayıb: daxil olubsa hesabdakı ad / email göstərilir
+const EMPTY_FORM = { name: null, email: null, message: "" };
+
+/* ---------- 2. Şəkil + "Get In Touch" forması (backend: POST /api/contact) ---------- */
 function ContactForm() {
   const [mediaRef, mediaInView] = useInView(0.2);
   const [formRef, formInView] = useInView(0.2);
+  const { user } = useAuth();
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [status, setStatus] = useState({ pending: false, error: "", success: "" });
+
+  const values = {
+    name: form.name ?? user?.name ?? "",
+    email: form.email ?? user?.email ?? "",
+    message: form.message,
+  };
+
+  const update = (field) => (e) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    setStatus((prev) => ({ ...prev, error: "", success: "" }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ pending: true, error: "", success: "" });
+    try {
+      const data = await contactApi.send(values);
+      setForm(EMPTY_FORM);
+      setStatus({ pending: false, error: "", success: data.message });
+    } catch (error) {
+      setStatus({ pending: false, error: error.message, success: "" });
+    }
+  };
 
   return (
     <section className="contact-page">
@@ -90,22 +122,61 @@ function ContactForm() {
           <div ref={formRef} className={`contact-page__form-col${formInView ? " is-inview" : ""}`}>
             <SectionTitle align="left" subtitle="Contact Us" title="Get In Touch" />
 
-            <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
+            <form className="contact-form" onSubmit={handleSubmit}>
               <div className="contact-form__control">
                 <label htmlFor="contact-name">Full Name</label>
-                <input id="contact-name" type="text" placeholder="Enter name" autoComplete="name" />
+                <input
+                  id="contact-name"
+                  type="text"
+                  placeholder="Enter name"
+                  autoComplete="name"
+                  value={values.name}
+                  onChange={update("name")}
+                  maxLength={50}
+                  required
+                />
               </div>
               <div className="contact-form__control">
                 <label htmlFor="contact-email">Email</label>
-                <input id="contact-email" type="email" placeholder="Enter email" autoComplete="email" />
+                <input
+                  id="contact-email"
+                  type="email"
+                  placeholder="Enter email"
+                  autoComplete="email"
+                  value={values.email}
+                  onChange={update("email")}
+                  maxLength={100}
+                  required
+                />
               </div>
               <div className="contact-form__control contact-form__control--full">
                 <label htmlFor="contact-message">Message</label>
-                <textarea id="contact-message" placeholder="Write Message" />
+                <textarea
+                  id="contact-message"
+                  placeholder="Write Message"
+                  value={values.message}
+                  onChange={update("message")}
+                  minLength={10}
+                  maxLength={2000}
+                  required
+                />
               </div>
+              {(status.error || status.success) && (
+                <div className="contact-form__control contact-form__control--full">
+                  {status.error ? (
+                    <p className="contact-form__error" role="alert">
+                      {status.error}
+                    </p>
+                  ) : (
+                    <p className="contact-form__notice" role="status">
+                      {status.success}
+                    </p>
+                  )}
+                </div>
+              )}
               <div className="contact-form__control contact-form__control--full">
-                <button type="submit" className="travhub-btn contact-form__submit">
-                  <span>Send Messages</span>
+                <button type="submit" className="travhub-btn contact-form__submit" disabled={status.pending}>
+                  <span>{status.pending ? "Sending..." : "Send Message"}</span>
                 </button>
               </div>
             </form>

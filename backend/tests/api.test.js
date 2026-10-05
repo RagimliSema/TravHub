@@ -7,6 +7,8 @@ import app from "../app.js";
 import User from "../models/User.js";
 import Product from "../models/Product.js";
 import Cart from "../models/Cart.js";
+import Comment from "../models/Comment.js";
+import ContactMessage from "../models/ContactMessage.js";
 import { devOutbox } from "../utils/sendEmail.js";
 
 /*
@@ -478,6 +480,138 @@ describe("Admin: users and cleanup", () => {
     const adminUser = await User.findOne({ email: "admin@mail.com" });
     const self = await api("DELETE", `/api/users/${adminUser._id}`, { token: ctx.adminToken });
     assert.equal(self.status, 400);
+  });
+});
+
+describe("Blog comments", () => {
+  const post = "katie-stewart-net-zero";
+
+  it("anyone can read; writing needs login", async () => {
+    const list = await api("GET", `/api/comments?post=${post}`);
+    assert.equal(list.status, 200);
+    assert.deepEqual(list.body.comments, []);
+
+    const anonymous = await api("POST", "/api/comments", { body: { post, text: "Hello" } });
+    assert.equal(anonymous.status, 401);
+  });
+
+  it("validates the post id and the text", async () => {
+    assert.equal((await api("GET", "/api/comments?post=../etc")).status, 400);
+    assert.equal((await api("GET", "/api/comments")).status, 400);
+
+    const empty = await api("POST", "/api/comments", { token: ctx.userToken, body: { post, text: "   " } });
+    assert.equal(empty.status, 400);
+
+    const tooLong = await api("POST", "/api/comments", { token: ctx.userToken, body: { post, text: "x".repeat(1001) } });
+    assert.equal(tooLong.status, 400);
+
+    const injection = await api("POST", "/api/comments", { token: ctx.userToken, body: { post, text: { $gt: "" } } });
+    assert.equal(injection.status, 400);
+  });
+
+  it("posts a comment with the account name, and replies in one thread", async () => {
+    const res = await api("POST", "/api/comments", {
+      token: ctx.userToken,
+      body: { post, text: "  Great article!  ", name: "Fake Name", user: "000000000000000000000000" },
+    });
+    assert.equal(res.status, 201);
+    assert.equal(res.body.comment.name, "Ali");
+    assert.equal(res.body.comment.text, "Great article!");
+    assert.equal(res.body.comment.user, ctx.userId);
+    ctx.commentId = res.body.comment._id;
+
+    const reply = await api("POST", "/api/comments", {
+      token: ctx.adminToken,
+      body: { post, text: "Thank you!", parent: ctx.commentId },
+    });
+    assert.equal(reply.status, 201);
+    ctx.replyId = reply.body.comment._id;
+
+    // cavaba cavab – eyni mövzunun altına düşür
+    const nested = await api("POST", "/api/comments", {
+      token: ctx.userToken,
+      body: { post, text: "You are welcome", parent: ctx.replyId },
+    });
+    assert.equal(nested.status, 201);
+    assert.equal(nested.body.comment.parent, ctx.commentId);
+
+    const list = await api("GET", `/api/comments?post=${post}`);
+    assert.equal(list.body.count, 3);
+    assert.equal(list.body.comments.length, 1);
+    assert.deepEqual(
+      list.body.comments[0].replies.map((r) => r.text),
+      ["Thank you!", "You are welcome"]
+    );
+    assert.equal(list.body.comments[0].email, undefined);
+  });
+
+  it("rejects replies to a missing comment or to another post", async () => {
+    const missing = await api("POST", "/api/comments", {
+      token: ctx.userToken,
+      body: { post, text: "Hi", parent: "000000000000000000000000" },
+    });
+    assert.equal(missing.status, 404);
+
+    const otherPost = await api("POST", "/api/comments", {
+      token: ctx.userToken,
+      body: { post: "another-post", text: "Hi", parent: ctx.commentId },
+    });
+    assert.equal(otherPost.status, 404);
+
+    const badId = await api("POST", "/api/comments", { token: ctx.userToken, body: { post, text: "Hi", parent: "abc" } });
+    assert.equal(badId.status, 400);
+  });
+
+  it("only the author or an admin can delete; a thread is deleted with its replies", async () => {
+    const stranger = await register("Stranger", "stranger@mail.com");
+    const forbidden = await api("DELETE", `/api/comments/${ctx.commentId}`, { token: stranger.body.token });
+    assert.equal(forbidden.status, 403);
+
+    const ownReply = await api("DELETE", `/api/comments/${ctx.replyId}`, { token: ctx.adminToken });
+    assert.equal(ownReply.status, 200);
+    assert.equal(ownReply.body.deleted, 1);
+
+    const thread = await api("DELETE", `/api/comments/${ctx.commentId}`, { token: ctx.userToken });
+    assert.equal(thread.status, 200);
+    assert.equal(thread.body.deleted, 2);
+    assert.equal(await Comment.countDocuments({ post }), 0);
+
+    assert.equal((await api("DELETE", `/api/comments/${ctx.commentId}`, { token: ctx.userToken })).status, 404);
+  });
+});
+
+describe("Contact form", () => {
+  it("saves the message and emails the admins with the sender as reply-to", async () => {
+    devOutbox.length = 0;
+    const res = await api("POST", "/api/contact", {
+      body: { name: "Leyla", email: "Leyla@Mail.com", message: "Do you have tours to Gabala in May?" },
+    });
+    assert.equal(res.status, 201);
+    assert.equal(res.body.success, true);
+
+    const saved = await ContactMessage.findOne({ email: "leyla@mail.com" });
+    assert.equal(saved.message, "Do you have tours to Gabala in May?");
+
+    assert.equal(devOutbox.length, 1);
+    assert.match(devOutbox[0].to, /admin@mail\.com/);
+    assert.deepEqual(devOutbox[0].replyTo, { name: "Leyla", address: "leyla@mail.com" });
+    assert.match(devOutbox[0].subject, /Leyla/);
+  });
+
+  it("rejects missing or invalid fields", async () => {
+    const empty = await api("POST", "/api/contact", { body: {} });
+    assert.equal(empty.status, 400);
+    assert.ok(empty.body.errors.length >= 3);
+
+    const badEmail = await api("POST", "/api/contact", {
+      body: { name: "A", email: "not-an-email", message: "Hello there, a question" },
+    });
+    assert.equal(badEmail.status, 400);
+
+    const injection = await api("POST", "/api/contact", {
+      body: { name: "A", email: { $ne: null }, message: "Hello there, a question" },
+    });
+    assert.equal(injection.status, 400);
   });
 });
 

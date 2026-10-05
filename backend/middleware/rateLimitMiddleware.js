@@ -27,3 +27,23 @@ export const passwordResetLimiter = rateLimit({
   skip: () => process.env.NODE_ENV === "test",
   message: { success: false, message: "Too many reset requests, please try again in 15 minutes" },
 });
+
+// Contact formu: eyni IP-dən 15 dəqiqədə ən çox 5 mesaj (spam əleyhinə)
+export const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === "test",
+  message: { success: false, message: "Too many messages, please try again in 15 minutes" },
+});
+
+// Şərhlər: eyni IP-dən 15 dəqiqədə ən çox 20 şərh / cavab
+export const commentLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === "test",
+  message: { success: false, message: "Too many comments, please try again in 15 minutes" },
+});

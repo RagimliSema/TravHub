@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaQuoteLeft,
   FaCircleCheck,
@@ -10,12 +11,14 @@ import {
 import { DateBadge, PostMeta } from "../newslist/newslist";
 import { SidebarTags } from "../sidebarwidgets/sidebarwidgets";
 import NewsLayout from "../newssidebar/newssidebar";
+import StatusMessage from "../statusmessage/statusmessage";
+import { useAuth } from "../../context/AuthContext";
+import { useRequest } from "../../hooks/useRequest";
+import { commentApi } from "../../services/api";
 import "../travhubbtn/travhubbtn.css";
 import "./newsdetails.css";
 
 import mainImage from "../../assets/image/blog-list-2.jpg";
-import comment1 from "../../assets/image/blog-comment-1-1.jpg";
-import comment2 from "../../assets/image/blog-comment-1-2.jpg";
 
 const SOCIALS = [
   { label: "Facebook", href: "https://facebook.com", Icon: FaFacebookF },
@@ -24,47 +27,299 @@ const SOCIALS = [
   { label: "Instagram", href: "https://instagram.com", Icon: FaInstagram },
 ];
 
-const COMMENT_TEXT =
-  "Lorem ipsum dolor sit amet consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus etmagnis disparturient montesnascetur ridiculus mus. Donec quam felis ultricies nec pellentesque";
+// bütün "/news-details" variantları eyni yazını göstərir – şərhlər bu ada bağlıdır
+const POST_ID = "katie-stewart-net-zero";
+const MAX_LENGTH = 1000;
 
-const comments = [
-  { name: "Leslie Alexander", time: "10 Hours ago", image: comment1 },
-  { name: "Savannah Nguyen", time: "01 Day ago", image: comment2 },
-];
+// "Just now", "5 minutes ago", "2 days ago", bir həftədən köhnə – tarix
+function timeAgo(value) {
+  const minutes = Math.floor((Date.now() - new Date(value).getTime()) / 60000);
+  const plural = (count, unit) => `${count} ${unit}${count === 1 ? "" : "s"} ago`;
+  if (minutes < 1) return "Just now";
+  if (minutes < 60) return plural(minutes, "minute");
+  if (minutes < 24 * 60) return plural(Math.floor(minutes / 60), "hour");
+  if (minutes < 7 * 24 * 60) return plural(Math.floor(minutes / (24 * 60)), "day");
+  return new Date(value).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
 
-/* ---------- Şərh yazma forması (yalnız frontend) ---------- */
-function CommentForm() {
+// şəkil yoxdur – adın baş hərfləri yaşıl dairədə
+function Avatar({ name }) {
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0].toUpperCase())
+    .join("");
+  return (
+    <span className="comments__image comments__avatar" aria-hidden="true">
+      {initials || "?"}
+    </span>
+  );
+}
+
+/* ---------- Şərhə cavab forması (şərhin altında açılır) ---------- */
+function ReplyForm({ comment, threadId, mention, onPosted, onCancel }) {
+  const [text, setText] = useState(mention ? `@${mention} ` : "");
+  const [status, setStatus] = useState({ pending: false, error: "" });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ pending: true, error: "" });
+    try {
+      await commentApi.create(POST_ID, text, threadId);
+      onPosted();
+    } catch (error) {
+      setStatus({ pending: false, error: error.message });
+    }
+  };
+
+  return (
+    <form className="comments__reply-form" onSubmit={handleSubmit}>
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder={`Reply to ${comment.name}`}
+        aria-label={`Reply to ${comment.name}`}
+        maxLength={MAX_LENGTH}
+        required
+        autoFocus
+      />
+      {status.error && (
+        <p className="comment-form__error" role="alert">
+          {status.error}
+        </p>
+      )}
+      <div className="comments__reply-actions">
+        <button type="submit" className="travhub-btn comment-form__submit" disabled={status.pending}>
+          <span>{status.pending ? "Posting..." : "Post Reply"}</span>
+        </button>
+        <button type="button" className="comments__link-btn" onClick={onCancel} disabled={status.pending}>
+          Cancel
+        </button>
+      </div>
+    </form>
+  );
+}
+
+/* ---------- Bir şərh (cavabları ilə birlikdə) ---------- */
+function CommentItem({ comment, threadId, replyingTo, onReply, onCancelReply, onChanged }) {
+  const { user, isAdmin } = useAuth();
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const canDelete = !!user && (isAdmin || comment.user === user._id);
+
+  const handleDelete = async () => {
+    const message = comment.replies?.length
+      ? "Delete this comment and its replies?"
+      : "Delete this comment?";
+    if (!window.confirm(message)) return;
+
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      await commentApi.remove(comment._id);
+      onChanged();
+    } catch (error) {
+      setDeleteError(error.message);
+      setDeleting(false);
+    }
+  };
+
+  return (
+    <li className="comments__card">
+      <Avatar name={comment.name} />
+      <div className="comments__content">
+        <h3 className="comments__name">{comment.name}</h3>
+        <time className="comments__time" dateTime={comment.createdAt}>
+          {timeAgo(comment.createdAt)}
+        </time>
+        <p className="comments__text">{comment.text}</p>
+
+        <button type="button" className="travhub-btn comments__reply" onClick={() => onReply(comment)}>
+          <span>Reply</span>
+        </button>
+        {canDelete && (
+          <button type="button" className="comments__link-btn comments__delete" onClick={handleDelete} disabled={deleting}>
+            {deleting ? "Deleting..." : "Delete"}
+          </button>
+        )}
+        {deleteError && (
+          <p className="comment-form__error" role="alert">
+            {deleteError}
+          </p>
+        )}
+
+        {replyingTo?.commentId === comment._id && (
+          <ReplyForm
+            comment={comment}
+            threadId={threadId}
+            mention={comment._id === threadId ? "" : comment.name}
+            onPosted={onChanged}
+            onCancel={onCancelReply}
+          />
+        )}
+
+        {comment.replies?.length > 0 && (
+          <ul className="comments__replies">
+            {comment.replies.map((reply) => (
+              <CommentItem
+                key={reply._id}
+                comment={reply}
+                threadId={threadId}
+                replyingTo={replyingTo}
+                onReply={onReply}
+                onCancelReply={onCancelReply}
+                onChanged={onChanged}
+              />
+            ))}
+          </ul>
+        )}
+      </div>
+    </li>
+  );
+}
+
+/* ---------- Şərh yazma forması ---------- */
+function CommentForm({ onPosted }) {
+  const { user } = useAuth();
+  const location = useLocation();
+  const [text, setText] = useState("");
+  const [status, setStatus] = useState({ pending: false, error: "", success: "" });
+
+  if (!user) {
+    return (
+      <div className="comment-form">
+        <h3 className="comment-form__title">Leave a Comment</h3>
+        <p className="comment-form__login">Please log in to leave a comment or reply to one.</p>
+        <Link to="/login" state={{ from: location.pathname }} className="travhub-btn comment-form__submit">
+          <span>Log In</span>
+        </Link>
+      </div>
+    );
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ pending: true, error: "", success: "" });
+    try {
+      await commentApi.create(POST_ID, text);
+      setText("");
+      setStatus({ pending: false, error: "", success: "Your comment has been posted." });
+      onPosted();
+    } catch (error) {
+      setStatus({ pending: false, error: error.message, success: "" });
+    }
+  };
+
   return (
     <div className="comment-form">
       <h3 className="comment-form__title">Leave a Comment</h3>
 
-      <form className="comment-form__grid" onSubmit={(e) => e.preventDefault()}>
+      <form className="comment-form__grid" onSubmit={handleSubmit}>
         <div className="comment-form__control">
           <label htmlFor="cf-name">Full Name</label>
-          <input id="cf-name" type="text" placeholder="Enter name" autoComplete="name" />
+          <input id="cf-name" type="text" value={user.name} readOnly />
         </div>
         <div className="comment-form__control">
           <label htmlFor="cf-email">Email</label>
-          <input id="cf-email" type="email" placeholder="Enter email" autoComplete="email" />
+          <input id="cf-email" type="email" value={user.email} readOnly />
         </div>
         <div className="comment-form__control comment-form__control--full">
           <label htmlFor="cf-message">Message</label>
-          <textarea id="cf-message" placeholder="Write Message" />
+          <textarea
+            id="cf-message"
+            placeholder="Write Message"
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              setStatus((prev) => ({ ...prev, success: "" }));
+            }}
+            maxLength={MAX_LENGTH}
+            required
+          />
         </div>
+        {(status.error || status.success) && (
+          <div className="comment-form__control comment-form__control--full">
+            {status.error ? (
+              <p className="comment-form__error" role="alert">
+                {status.error}
+              </p>
+            ) : (
+              <p className="comment-form__notice" role="status">
+                {status.success}
+              </p>
+            )}
+          </div>
+        )}
         <div className="comment-form__control comment-form__control--full">
-          <label className="comment-form__check">
-            <input type="checkbox" name="save" />
-            <span className="comment-form__box" aria-hidden="true" />
-            Save my name, email, and website in this browser for the next time I comment.
-          </label>
-        </div>
-        <div className="comment-form__control comment-form__control--full">
-          <button type="submit" className="travhub-btn comment-form__submit">
-            <span>Post Comment</span>
+          <button type="submit" className="travhub-btn comment-form__submit" disabled={status.pending}>
+            <span>{status.pending ? "Posting..." : "Post Comment"}</span>
           </button>
         </div>
       </form>
     </div>
+  );
+}
+
+/* ---------- Şərhlər bölməsi: siyahı + cavablar + forma ---------- */
+function Comments() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { data, error, loading, retry } = useRequest((signal) => commentApi.list(POST_ID, signal), POST_ID);
+  const [replyingTo, setReplyingTo] = useState(null);
+
+  const comments = data?.comments ?? [];
+  const count = data?.count ?? 0;
+
+  // cavab üçün giriş lazımdır; cavaba cavab eyni mövzunun altına yazılır (threadId)
+  const handleReply = (comment) => {
+    if (!user) {
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
+    setReplyingTo({ commentId: comment._id });
+  };
+
+  const handleChanged = () => {
+    setReplyingTo(null);
+    retry();
+  };
+
+  let list;
+  if (!data && loading) {
+    list = <StatusMessage type="loading" text="Loading comments..." compact />;
+  } else if (!data && error) {
+    list = <StatusMessage type="error" text={error.message} onRetry={retry} compact />;
+  } else if (!comments.length) {
+    list = <p className="comments__empty">No comments yet. Be the first to share your thoughts!</p>;
+  } else {
+    list = (
+      <ul className="comments__list">
+        {comments.map((comment) => (
+          <CommentItem
+            key={comment._id}
+            comment={comment}
+            threadId={comment._id}
+            replyingTo={replyingTo}
+            onReply={handleReply}
+            onCancelReply={() => setReplyingTo(null)}
+            onChanged={handleChanged}
+          />
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <>
+      <div className="comments" id="comments">
+        <h3 className="comments__title">Comments {String(count).padStart(2, "0")}</h3>
+        {list}
+      </div>
+
+      <CommentForm onPosted={retry} />
+    </>
   );
 }
 
@@ -160,27 +415,8 @@ export default function NewsDetails({ sidebar }) {
             </div>
           </div>
 
-          {/* şərhlər */}
-          <div className="comments">
-            <h3 className="comments__title">Comments 02</h3>
-            <ul className="comments__list">
-              {comments.map((comment) => (
-                <li key={comment.name} className="comments__card">
-                  <img className="comments__image" src={comment.image} alt={comment.name} />
-                  <div className="comments__content">
-                    <h3 className="comments__name">{comment.name}</h3>
-                    <span className="comments__time">{comment.time}</span>
-                    <p className="comments__text">{COMMENT_TEXT}</p>
-                    <Link to="/news-details" className="travhub-btn comments__reply">
-                      <span>Reply</span>
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <CommentForm />
+          {/* şərhlər (backend: /api/comments) */}
+          <Comments />
         </NewsLayout>
       </div>
     </section>

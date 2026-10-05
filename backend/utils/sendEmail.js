@@ -33,13 +33,14 @@ const getTransporter = () => {
   return transporter;
 };
 
-export async function sendEmail({ to, subject, text, html }) {
+// replyTo: "Cavab ver" basanda məktub kimə getsin (məs. Contact formunu dolduran şəxsə)
+export async function sendEmail({ to, subject, text, html, replyTo }) {
   if (isEmailConfigured()) {
-    await getTransporter().sendMail({ from: env("EMAIL_FROM"), to, subject, text, html });
+    await getTransporter().sendMail({ from: env("EMAIL_FROM"), to, subject, text, html, replyTo });
     return { delivered: true };
   }
 
-  devOutbox.push({ to, subject, text });
+  devOutbox.push({ to, subject, text, replyTo });
   if (devOutbox.length > 20) devOutbox.shift();
 
   if (process.env.NODE_ENV === "development") {

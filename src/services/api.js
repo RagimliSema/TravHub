@@ -142,6 +142,18 @@ export const orderApi = {
   mine: (signal) => request("/orders/my-orders", { signal }),
 };
 
+// bloq şərhləri: oxumaq hamıya açıqdır, yazmaq / silmək üçün giriş lazımdır
+export const commentApi = {
+  list: (post, signal) => request(`/comments${toQuery({ post })}`, { signal }),
+  create: (post, text, parent) => request("/comments", { method: "POST", body: { post, text, parent } }),
+  remove: (id) => request(`/comments/${id}`, { method: "DELETE" }),
+};
+
+// Contact formu – giriş tələb etmir
+export const contactApi = {
+  send: (body) => request("/contact", { method: "POST", body, auth: false }),
+};
+
 /* ---------- Admin Panel ----------
    Bu sorğular yalnız admin tokeni ilə uğurlu olur – backend protect + admin
    middleware-i ilə yoxlayır, adi istifadəçi 403 alır. */
