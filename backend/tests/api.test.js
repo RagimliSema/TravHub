@@ -9,6 +9,7 @@ import Product from "../models/Product.js";
 import Cart from "../models/Cart.js";
 import Comment from "../models/Comment.js";
 import ContactMessage from "../models/ContactMessage.js";
+import Subscriber from "../models/Subscriber.js";
 import { devOutbox } from "../utils/sendEmail.js";
 
 /*
@@ -612,6 +613,51 @@ describe("Contact form", () => {
       body: { name: "A", email: { $ne: null }, message: "Hello there, a question" },
     });
     assert.equal(injection.status, 400);
+  });
+
+  it("only admins can read and delete messages", async () => {
+    assert.equal((await api("GET", "/api/contact")).status, 401);
+    assert.equal((await api("GET", "/api/contact", { token: ctx.userToken })).status, 403);
+
+    const list = await api("GET", "/api/contact", { token: ctx.adminToken });
+    assert.equal(list.status, 200);
+    assert.equal(list.body.count, 1);
+    const id = list.body.messages[0]._id;
+
+    assert.equal((await api("DELETE", `/api/contact/${id}`, { token: ctx.userToken })).status, 403);
+    assert.equal((await api("DELETE", `/api/contact/${id}`, { token: ctx.adminToken })).status, 200);
+    assert.equal((await api("DELETE", `/api/contact/${id}`, { token: ctx.adminToken })).status, 404);
+  });
+});
+
+describe("Newsletter", () => {
+  it("subscribes an email once and answers the same for a repeat", async () => {
+    const first = await api("POST", "/api/newsletter", { body: { email: "Reader@Mail.com " } });
+    assert.equal(first.status, 201);
+
+    const again = await api("POST", "/api/newsletter", { body: { email: "reader@mail.com" } });
+    assert.equal(again.status, 201);
+    assert.equal(again.body.message, first.body.message);
+    assert.equal(await Subscriber.countDocuments({ email: "reader@mail.com" }), 1);
+  });
+
+  it("rejects invalid emails", async () => {
+    assert.equal((await api("POST", "/api/newsletter", { body: { email: "nope" } })).status, 400);
+    assert.equal((await api("POST", "/api/newsletter", { body: {} })).status, 400);
+    assert.equal((await api("POST", "/api/newsletter", { body: { email: { $gt: "" } } })).status, 400);
+  });
+
+  it("only admins can list and remove subscribers", async () => {
+    assert.equal((await api("GET", "/api/newsletter", { token: ctx.userToken })).status, 403);
+
+    const list = await api("GET", "/api/newsletter", { token: ctx.adminToken });
+    assert.equal(list.status, 200);
+    assert.deepEqual(list.body.subscribers.map((s) => s.email), ["reader@mail.com"]);
+
+    const id = list.body.subscribers[0]._id;
+    assert.equal((await api("DELETE", `/api/newsletter/${id}`, { token: ctx.userToken })).status, 403);
+    assert.equal((await api("DELETE", `/api/newsletter/${id}`, { token: ctx.adminToken })).status, 200);
+    assert.equal(await Subscriber.countDocuments(), 0);
   });
 });
 

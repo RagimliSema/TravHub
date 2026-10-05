@@ -38,6 +38,16 @@ export const contactLimiter = rateLimit({
   message: { success: false, message: "Too many messages, please try again in 15 minutes" },
 });
 
+// Newsletter: eyni IP-dən 15 dəqiqədə ən çox 5 email
+export const newsletterLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === "test",
+  message: { success: false, message: "Too many attempts, please try again in 15 minutes" },
+});
+
 // Şərhlər: eyni IP-dən 15 dəqiqədə ən çox 20 şərh / cavab
 export const commentLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,

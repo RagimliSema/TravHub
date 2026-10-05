@@ -415,6 +415,14 @@
   border-color: var(--ad-danger);
 }
 
+/* Contact mesajının mətni: sətir keçidləri qalır, uzun söz cədvəli dağıtmır */
+.admin-message-text {
+  max-width: 460px;
+  margin: 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
 /* ---------- Düymələr ---------- */
 .admin-btn {
   display: inline-flex;

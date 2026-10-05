@@ -20,7 +20,14 @@ import Contact from "./pages/contact/contact";
 import { CartPage, CheckoutPage, OrdersPage, WishlistPage } from "./pages/shop/shop";
 import Unauthorized from "./pages/unauthorized/unauthorized";
 import OAuthCallback from "./pages/oauthcallback/oauthcallback";
-import { AdminDashboard, AdminProducts, AdminOrders, AdminUsers } from "./pages/admin/admin";
+import {
+  AdminDashboard,
+  AdminProducts,
+  AdminOrders,
+  AdminUsers,
+  AdminMessages,
+  AdminSubscribers,
+} from "./pages/admin/admin";
 import RequireAuth from "./components/requireauth/requireauth";
 import RequireAdmin from "./components/requireadmin/requireadmin";
 import AdminLayout from "./components/adminlayout/adminlayout";
@@ -92,6 +99,8 @@ function App() {
             <Route path="products" element={<AdminProducts />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="messages" element={<AdminMessages />} />
+            <Route path="subscribers" element={<AdminSubscribers />} />
           </Route>
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/404" element={<NotFound />} />

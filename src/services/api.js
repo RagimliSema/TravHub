@@ -154,6 +154,11 @@ export const contactApi = {
   send: (body) => request("/contact", { method: "POST", body, auth: false }),
 };
 
+// Footer-dəki Newsletter formu – giriş tələb etmir
+export const newsletterApi = {
+  subscribe: (email) => request("/newsletter", { method: "POST", body: { email }, auth: false }),
+};
+
 /* ---------- Admin Panel ----------
    Bu sorğular yalnız admin tokeni ilə uğurlu olur – backend protect + admin
    middleware-i ilə yoxlayır, adi istifadəçi 403 alır. */
@@ -167,4 +172,10 @@ export const adminApi = {
 
   users: (signal) => request("/users", { signal }),
   deleteUser: (id) => request(`/users/${id}`, { method: "DELETE" }),
+
+  messages: (signal) => request("/contact", { signal }),
+  deleteMessage: (id) => request(`/contact/${id}`, { method: "DELETE" }),
+
+  subscribers: (signal) => request("/newsletter", { signal }),
+  deleteSubscriber: (id) => request(`/newsletter/${id}`, { method: "DELETE" }),
 };

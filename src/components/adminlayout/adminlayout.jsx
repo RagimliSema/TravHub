@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { FiGrid, FiPackage, FiShoppingBag, FiUsers, FiArrowLeft, FiLogOut } from "react-icons/fi";
+import { FiGrid, FiPackage, FiShoppingBag, FiUsers, FiMail, FiSend, FiArrowLeft, FiLogOut } from "react-icons/fi";
 import { FaSuitcaseRolling } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import "./adminlayout.css";
@@ -9,6 +9,8 @@ const NAV = [
   { to: "/admin/products", label: "Products", Icon: FiPackage },
   { to: "/admin/orders", label: "Orders", Icon: FiShoppingBag },
   { to: "/admin/users", label: "Users", Icon: FiUsers },
+  { to: "/admin/messages", label: "Messages", Icon: FiMail },
+  { to: "/admin/subscribers", label: "Subscribers", Icon: FiSend },
 ];
 
 /*

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa6";
 import { useInView } from "../../hooks/useInView";
+import { newsletterApi } from "../../services/api";
 import "./footer.css";
 
 import logo from "../../assets/image/logo1.png";
@@ -61,14 +62,20 @@ function LinkList({ title, links, className }) {
 export default function Footer() {
   const [footerRef, inView] = useInView(0.1);
   const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
+  const [status, setStatus] = useState({ pending: false, error: "", success: "" });
 
-  // Yalnız frontend: forma heç yerə göndərilmir, sadəcə təşəkkür yazısı görünür
-  const handleSubmit = (e) => {
+  // email backend-də saxlanılır (POST /api/newsletter), Admin Panel → Subscribers-də görünür
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email.trim()) return;
-    setSubscribed(true);
-    setEmail("");
+    setStatus({ pending: true, error: "", success: "" });
+    try {
+      const data = await newsletterApi.subscribe(email);
+      setStatus({ pending: false, error: "", success: data.message });
+      setEmail("");
+    } catch (error) {
+      setStatus({ pending: false, error: error.message, success: "" });
+    }
   };
 
   return (
@@ -96,17 +103,23 @@ export default function Footer() {
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                setSubscribed(false);
+                setStatus((prev) => ({ ...prev, error: "", success: "" }));
               }}
+              maxLength={100}
               required
             />
-            <button type="submit" className="footer-btn">
-              <span>Send Message</span>
+            <button type="submit" className="footer-btn" disabled={status.pending}>
+              <span>{status.pending ? "Sending..." : "Send Message"}</span>
             </button>
 
-            {subscribed && (
+            {status.success && (
               <p className="footer-newsletter__response" role="status">
-                Thank you! You are subscribed.
+                {status.success}
+              </p>
+            )}
+            {status.error && (
+              <p className="footer-newsletter__response footer-newsletter__response--error" role="alert">
+                {status.error}
               </p>
             )}
           </form>

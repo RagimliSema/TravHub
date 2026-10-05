@@ -154,6 +154,15 @@
   color: var(--footer-accent);
 }
 
+.footer-newsletter__response--error {
+  color: #e74c3c;
+}
+
+.footer-btn:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
 /*
   Düymə hover-i (demo-dakı kimi):
   qara dairə aşağıdan böyüyüb düyməni doldurur, sonra bütöv qara fon gəlir;

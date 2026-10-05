@@ -50,3 +50,28 @@ export const sendContactMessage = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc    Contact mesajları (ən yenisi birinci)
+// @route   GET /api/contact
+// @access  Private/Admin
+export const getContactMessages = async (req, res, next) => {
+  try {
+    const messages = await ContactMessage.find().sort({ createdAt: -1 });
+    res.json({ success: true, count: messages.length, messages });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Contact mesajını sil
+// @route   DELETE /api/contact/:id
+// @access  Private/Admin
+export const deleteContactMessage = async (req, res, next) => {
+  try {
+    const message = await ContactMessage.findByIdAndDelete(req.params.id);
+    if (!message) throw new ApiError(404, "Message not found");
+    res.json({ success: true, message: "Message deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
