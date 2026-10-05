@@ -21,11 +21,14 @@ const STATE_COOKIE = "travhub_oauth";
 const STATE_MAX_AGE = 10 * 60 * 1000; // 10 dəqiqə
 const FB_VERSION = () => process.env.FACEBOOK_GRAPH_VERSION || "v23.0";
 
+// açarı kopyalayanda təsadüfən qalan boşluqlar Google/Facebook-da "invalid client" xətası verir
+const env = (name) => (process.env[name] ?? "").trim();
+
 const PROVIDERS = {
   google: {
     label: "Google",
-    clientId: () => process.env.GOOGLE_CLIENT_ID,
-    clientSecret: () => process.env.GOOGLE_CLIENT_SECRET,
+    clientId: () => env("GOOGLE_CLIENT_ID"),
+    clientSecret: () => env("GOOGLE_CLIENT_SECRET"),
     authUrl: () => "https://accounts.google.com/o/oauth2/v2/auth",
     authParams: { scope: "openid email profile", prompt: "select_account" },
 
@@ -56,8 +59,8 @@ const PROVIDERS = {
 
   facebook: {
     label: "Facebook",
-    clientId: () => process.env.FACEBOOK_APP_ID,
-    clientSecret: () => process.env.FACEBOOK_APP_SECRET,
+    clientId: () => env("FACEBOOK_APP_ID"),
+    clientSecret: () => env("FACEBOOK_APP_SECRET"),
     authUrl: () => `https://www.facebook.com/${FB_VERSION()}/dialog/oauth`,
     authParams: { scope: "email,public_profile" },
 
