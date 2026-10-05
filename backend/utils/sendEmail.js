@@ -10,7 +10,10 @@ import nodemailer from "nodemailer";
   - production: göndərmək mümkün deyil – canSendEmail() false qaytarır.
 */
 
-export const isEmailConfigured = () => !!(process.env.SMTP_HOST && process.env.EMAIL_FROM);
+// dəyərin əvvəlində/sonunda təsadüfən qalan boşluq (məs. "smtp-relay.brevo.com ") DNS xətası verir
+const env = (name) => (process.env[name] ?? "").trim();
+
+export const isEmailConfigured = () => !!(env("SMTP_HOST") && env("EMAIL_FROM"));
 
 export const canSendEmail = () => isEmailConfigured() || process.env.NODE_ENV !== "production";
 
@@ -20,19 +23,19 @@ export const devOutbox = [];
 let transporter;
 
 const getTransporter = () => {
-  const port = Number(process.env.SMTP_PORT) || 587;
+  const port = Number(env("SMTP_PORT")) || 587;
   transporter ??= nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
+    host: env("SMTP_HOST"),
     port,
-    secure: port === 465, // 465 → SSL, 587 → STARTTLS
-    auth: process.env.SMTP_USER ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } : undefined,
+    secure: port === 465, // 465 → SSL, 587 / 2525 → STARTTLS
+    auth: env("SMTP_USER") ? { user: env("SMTP_USER"), pass: env("SMTP_PASS") } : undefined,
   });
   return transporter;
 };
 
 export async function sendEmail({ to, subject, text, html }) {
   if (isEmailConfigured()) {
-    await getTransporter().sendMail({ from: process.env.EMAIL_FROM, to, subject, text, html });
+    await getTransporter().sendMail({ from: env("EMAIL_FROM"), to, subject, text, html });
     return { delivered: true };
   }
 
