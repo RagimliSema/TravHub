@@ -1,6 +1,7 @@
 # Render Blueprint – backend (Express API) və frontend (Vite static site) birlikdə.
 # Render → New → Blueprint → bu repo. "sync: false" dəyərləri Render özü soruşur
 # (gizli məlumat bu faylda saxlanmır). JWT_SECRET-i Render özü təsadüfi yaradır.
+# Ünvanlar gizli deyil (brauzerdə görünür), ona görə burada birbaşa yazılıb.
 services:
   # ---------- Backend: https://travhub-sema-api.onrender.com ----------
   - type: web
@@ -23,16 +24,16 @@ services:
       # MongoDB Atlas bağlantı ünvanı (mongodb+srv://...)
       - key: MONGO_URI
         sync: false
-      # frontend-in Render ünvanı, məs. https://travhub-sema.onrender.com
+      # frontend-in ünvanı (CORS, şifrə sıfırlama linkləri, OAuth-dan qayıdış)
       - key: CLIENT_URL
-        sync: false
-      # bu backend-in öz ünvanı, məs. https://travhub-sema-api.onrender.com (OAuth üçün)
+        value: https://travhub-tours.onrender.com
+      # bu backend-in öz ünvanı (OAuth redirect URI-ləri bundan qurulur)
       - key: SERVER_URL
-        sync: false
+        value: https://travhub-sema-api.onrender.com
 
-  # ---------- Frontend: https://travhub-sema.onrender.com ----------
+  # ---------- Frontend: https://travhub-tours.onrender.com ----------
   - type: web
-    name: travhub-sema
+    name: travhub-tours
     runtime: static
     buildCommand: npm install && npm run build
     staticPublishPath: dist
@@ -42,6 +43,6 @@ services:
         source: /*
         destination: /index.html
     envVars:
-      # backend ünvanı + /api, məs. https://travhub-sema-api.onrender.com/api
+      # backend ünvanı + /api (build zamanı oxunur)
       - key: VITE_API_URL
-        sync: false
+        value: https://travhub-sema-api.onrender.com/api
