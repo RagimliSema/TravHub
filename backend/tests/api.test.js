@@ -563,6 +563,21 @@ describe("Blog comments", () => {
     assert.equal(badId.status, 400);
   });
 
+  it("admin sees every comment with the author's email; other users cannot", async () => {
+    assert.equal((await api("GET", "/api/comments/all")).status, 401);
+    assert.equal((await api("GET", "/api/comments/all", { token: ctx.userToken })).status, 403);
+
+    const res = await api("GET", "/api/comments/all", { token: ctx.adminToken });
+    assert.equal(res.status, 200);
+    assert.equal(res.body.count, 3);
+
+    const thread = res.body.comments.find((c) => c._id === ctx.commentId);
+    assert.equal(thread.email, "ali@mail.com");
+    assert.equal(thread.post, post);
+    assert.equal(thread.replies, 2);
+    assert.equal(thread.user, ctx.userId);
+  });
+
   it("only the author or an admin can delete; a thread is deleted with its replies", async () => {
     const stranger = await register("Stranger", "stranger@mail.com");
     const forbidden = await api("DELETE", `/api/comments/${ctx.commentId}`, { token: stranger.body.token });

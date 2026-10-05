@@ -173,6 +173,9 @@ export const adminApi = {
   users: (signal) => request("/users", { signal }),
   deleteUser: (id) => request(`/users/${id}`, { method: "DELETE" }),
 
+  comments: (signal) => request("/comments/all", { signal }),
+  deleteComment: (id) => request(`/comments/${id}`, { method: "DELETE" }),
+
   messages: (signal) => request("/contact", { signal }),
   deleteMessage: (id) => request(`/contact/${id}`, { method: "DELETE" }),
 

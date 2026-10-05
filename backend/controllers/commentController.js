@@ -42,6 +42,32 @@ export const listComments = async (req, res, next) => {
   }
 };
 
+// @desc    Bütün yazıların bütün şərhləri (ən yenisi birinci) – müəllifin email-i ilə
+// @route   GET /api/comments/all
+// @access  Private/Admin
+export const listAllComments = async (req, res, next) => {
+  try {
+    const docs = await Comment.find().sort({ createdAt: -1, _id: -1 }).limit(1000).populate("user", "email").lean();
+
+    // əsas şərh silinəndə cavabları da silinir – admin bunu əvvəlcədən görsün
+    const replyCounts = new Map();
+    for (const doc of docs) {
+      if (doc.parent) replyCounts.set(String(doc.parent), (replyCounts.get(String(doc.parent)) ?? 0) + 1);
+    }
+
+    const comments = docs.map((doc) => ({
+      ...toJson({ ...doc, user: doc.user?._id ?? null }),
+      post: doc.post,
+      email: doc.user?.email ?? null, // hesab silinibsə null
+      replies: replyCounts.get(String(doc._id)) ?? 0,
+    }));
+
+    res.json({ success: true, count: comments.length, comments });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Şərh yaz və ya şərhə cavab ver (parent). Cavaba cavab eyni mövzuya düşür.
 // @route   POST /api/comments   body: { post, text, parent? }
 // @access  Private

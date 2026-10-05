@@ -25,6 +25,7 @@ import {
   AdminProducts,
   AdminOrders,
   AdminUsers,
+  AdminComments,
   AdminMessages,
   AdminSubscribers,
 } from "./pages/admin/admin";
@@ -99,6 +100,7 @@ function App() {
             <Route path="products" element={<AdminProducts />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="comments" element={<AdminComments />} />
             <Route path="messages" element={<AdminMessages />} />
             <Route path="subscribers" element={<AdminSubscribers />} />
           </Route>
